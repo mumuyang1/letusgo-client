@@ -1,0 +1,29 @@
+<div class="panel panel-warning">
+  <div class="panel-heading">
+    <div class="row text-center">
+      <div class="col-md-2">分类</div>
+      <div class="col-md-2">商品</div>
+      <div class="col-md-2">单价</div>
+      <div class="col-md-3">数量</div>
+      <div class="col-md-2">移出购物车</div>
+      <div class="col-md-1">小计</div>
+    </div>
+  </div>
+    <div class="panel-body" ng-repeat="cartItem in cartItems" id="cartProduct.items.category">
+      <div class="row text-center">
+        <div class="col-md-2 form-group">{{cartItem.items.category}}</div>
+        <div class="col-md-2 form-group">{{cartItem.items.name}}</div>
+        <div class="col-md-2 form-group">{{cartItem.items.price}}/{{cartItem.items.unit}}</div>
+        <div class="col-md-3 form-group form-inline">
+          <button ng-click="addButton(cartItem.items)">+</button>
+            <input class="inputNum" type="text" ng-model='cartItem.inputCount'>
+          <button ng-click="reduceButton(cartItem.items)">-</button></div>
+        <div class="col-md-2 form-group"><button ng-click="deleteButton(cartItem.items)">移除</button></div>
+        <div class="col-md-1">
+          {{cartItem.items.price * cartItem.inputCount}}
+        </div>
+      </div>
+    </div>
+</div>
+<p class="text-center">总计：{{total}}元</p>
+<p class="text-center"><a class="btn btn-primary btn-lg" role="button" ng-href="#/pay">去结算>></a></p>
