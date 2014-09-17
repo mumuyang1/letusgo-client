@@ -1,11 +1,11 @@
 'use strict';
 
-xdescribe('Controller: ProductManageCtrl', function () {
+describe('Controller: ProductManageCtrl', function () {
 
   beforeEach(module('letusgoApp'));
 
   var $controller,productService,categoryService,scope,createController,
-      cartItemService,categories,newName,allProducts,store,product;
+      cartItemService,categories,newName,allProducts,product;
 
   beforeEach(inject(function ($injector) {
     scope = $injector.get('$rootScope').$new();
@@ -29,7 +29,6 @@ xdescribe('Controller: ProductManageCtrl', function () {
           {id: 2, name: '生活用品'},
         ];
 
-      store = {};
 
       newName = '香蕉';
 
@@ -40,33 +39,23 @@ xdescribe('Controller: ProductManageCtrl', function () {
               ];
       product = {barcode:'ITEM000001',category:'水果',name:'香蕉',price:'3.50',unit:'斤'};
 
-      spyOn(cartItemService,'get').andCallFake(function (key) {
-       return store[key];
-       });
-
-      spyOn(cartItemService,'set').andCallFake(function (key, value) {
-         return store[key] = value;
-       });
-
-      cartItemService.set('categories',categories);
-      cartItemService.set('allProducts',allProducts);
-
-      spyOn(scope,'$emit');
-      spyOn(categoryService,'getCategories').andReturn(categories);
-      spyOn(categoryService,'setCategories');
+      spyOn(cartItemService,'set');
 
   }));
 
 
   it('should highlight ok',function(){
+      spyOn(scope,'$emit');
       createController();
       expect(scope.$emit).toHaveBeenCalledWith('to-parent-productManageActive');
   });
 
 
   it('should show change manage view ok',function(){
+      spyOn(cartItemService,'get');
       createController();
-      expect(cartItemService.get.calls.length).toBe(1);
+
+      expect(cartItemService.get).toHaveBeenCalled();
       expect(scope.controlLayout).toBe(true);
       expect(scope.clickAddProduct).toBe(false);
       expect(scope.clickChangeProduct).toBe(false);
@@ -74,27 +63,34 @@ xdescribe('Controller: ProductManageCtrl', function () {
 
 
   it('should add product view can show',function(){
+      spyOn(categoryService,'getCategories');
+
       createController();
       scope.addProduct();
+
       expect(scope.controlLayout).toBe(false);
       expect(scope.clickAddProduct).toBe(true);
-      expect(categoryService.getCategories.calls.length).toBe(1);
+      expect(categoryService.getCategories).toHaveBeenCalled();
   });
 
 
   it('should finish add product can do',function(){
+      spyOn(cartItemService,'get').and.returnValue(allProducts);
+
       createController();
       scope.finishAddProduct();
+
       expect(scope.clickAddProduct).toBe(false);
       expect(scope.controlLayout).toBe(true);
       expect(scope.newProduct.barcode).toBe('ITEM000004');
       expect(scope.allProducts.length).toBe(4);
-      expect(cartItemService.set.calls.length).toBe(3);
+      expect(cartItemService.get.calls.count()).toBe(2);
   });
 
 
   it('should add product can cancel',function(){
       createController();
+
       scope.cancelAddProduct();
       expect(scope.clickAddProduct).toBe(false);
       expect(scope.controlLayout).toBe(true);
@@ -103,33 +99,40 @@ xdescribe('Controller: ProductManageCtrl', function () {
 
   it('should delete product can do',function(){
       spyOn(productService,'deleteProductButton');
+      spyOn(cartItemService,'get');
+
       createController();
       scope.deleteProduct();
-      expect(productService.deleteProductButton.calls.length).toBe(1);
-      expect(cartItemService.get.calls.length).toBe(2);
+
+      expect(productService.deleteProductButton.calls.count()).toBe(1);
+      expect(cartItemService.get.calls.count()).toBe(2);
   });
 
   it('should change product view can show',function(){
-      cartItemService.set('allProducts',allProducts);
+      spyOn(categoryService,'getCategories');
+      spyOn(productService,'getProductByName').and.returnValue(product);
 
-      spyOn(productService,'getProductByName').andReturn(product);
       createController();
       scope.changeProduct(newName);
+
       expect(scope.clickChangeProduct).toBe(true);
       expect(scope.controlLayout).toBe(false);
-      expect(cartItemService.set.calls.length).toBe(4);
-      expect(categoryService.getCategories.calls.length).toBe(1);
+      expect(cartItemService.set.calls.count()).toBe(1);
+      expect(categoryService.getCategories.calls.count()).toBe(1);
 
   });
 
   it('should finish change category can do',function(){
+      spyOn(cartItemService,'get');
       spyOn(productService,'changeProduct');
+
       createController();
       scope.finishChangeProduct();
+      
       expect(scope.clickChangeProduct).toBe(false);
       expect(scope.controlLayout).toBe(true);
-      expect(productService.changeProduct.calls.length).toBe(1);
-      expect(cartItemService.get.calls.length).toBe(3);
+      expect(productService.changeProduct.calls.count()).toBe(1);
+      expect(cartItemService.get.calls.count()).toBe(3);
   });
 
   it('should change product can cancel',function(){

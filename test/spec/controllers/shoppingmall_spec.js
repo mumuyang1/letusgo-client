@@ -53,7 +53,7 @@ describe('Controller: ShoppingMallCtrl', function () {
       spyOn(itemsService,'getPageTotal');
       createController();
       expect(itemsService.loadAllProducts).toHaveBeenCalled();
-      expect(itemsService.getPageTotal).toHaveBeenCalled();
+      expect(itemsService.getPageTotal).toHaveBeenCalled();      
     });
 
 
