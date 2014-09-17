@@ -128,7 +128,7 @@ describe('Controller: ProductManageCtrl', function () {
 
       createController();
       scope.finishChangeProduct();
-      
+
       expect(scope.clickChangeProduct).toBe(false);
       expect(scope.controlLayout).toBe(true);
       expect(productService.changeProduct.calls.count()).toBe(1);

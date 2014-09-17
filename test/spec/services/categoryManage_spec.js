@@ -1,6 +1,6 @@
 'use strict';
 
-xdescribe('Service: categoryManageService', function () {
+describe('Service: categoryManageService', function () {
 
     var localStorageService,categoryService,categories,allProducts,
         category,newCategoryName;
@@ -27,78 +27,77 @@ xdescribe('Service: categoryManageService', function () {
                 ];
         newCategoryName = '食品';
 
-        var store = {};
-
-        spyOn(localStorageService, 'get').andCallFake(function (key) {
-         return store[key];
-         });
-
-        spyOn(localStorageService, 'set').andCallFake(function (key, value) {
-           return store[key] = value;
-         });
-
-        localStorageService.set('categories',categories);
-        localStorageService.set('allProducts',allProducts);
-
+        // localStorageService.set('categories',categories);
+        // localStorageService.set('allProducts',allProducts);
+        spyOn(localStorageService, 'set');
      });
 
    it('should get categoryData is right', function(){
-      localStorageService.set('categoryData',null);
+      spyOn(localStorageService,'get').and.returnValue(null);
       categoryService.buildCategoryData();
-      expect(localStorageService.set.calls.length).toBe(3);
+      expect(localStorageService.get.calls.count()).toBe(1);
+      expect(localStorageService.set.calls.count()).toBe(1);
+   });
+
+   it('should get categoryData is right when store is not null', function(){
+      spyOn(localStorageService,'get').and.returnValue(categories);
+      var result =  categoryService.buildCategoryData();
+      expect(localStorageService.get.calls.count()).toBe(1);
+      expect(result.length).toBe(1);
+      expect(result[0].name).toBe('水果');
 
    });
 
-
    it('should get categories function can do', function(){
-
+      spyOn(localStorageService,'get').and.returnValue(categories);
       var result = categoryService.getCategories();
       expect(result.length).toBe(1);
    });
 
 
    it('should setCategories function can do', function(){
-
       categoryService.setCategories();
-      expect(localStorageService.set.calls.length).toBe(3);
+      expect(localStorageService.set.calls.count()).toBe(1);
    });
 
 
    it('should deleteCategoryButton can do', function(){
-      spyOn(categoryService,'getCategories').andReturn(categories);
+      spyOn(categoryService,'getCategories').and.returnValue(categories);
       spyOn(categoryService,'deleteProductsWithDeleteCategory');
       spyOn(categoryService,'setCategories');
       categoryService.deleteCategoryButton(category);
-      expect(categoryService.deleteProductsWithDeleteCategory.calls.length).toBe(1);
-      expect(categoryService.deleteProductsWithDeleteCategory.calls.length).toBe(1);
+      expect(categoryService.deleteProductsWithDeleteCategory.calls.count()).toBe(1);
+      expect(categoryService.deleteProductsWithDeleteCategory.calls.count()).toBe(1);
 
    });
 
 
    it('should delete all products with the category when deleteCategory', function(){
+      spyOn(localStorageService,'get').and.returnValue(allProducts);
       var result = categoryService.deleteProductsWithDeleteCategory(category.name);
-      expect(localStorageService.get.calls.length).toBe(1);
+      expect(localStorageService.get.calls.count()).toBe(1);
       expect(result.length).toBe(1);
       expect(result[0].category).toBe('饮料');
-      expect(localStorageService.get.calls.length).toBe(1);
+      expect(localStorageService.get.calls.count()).toBe(1);
    });
 
 
    it('should change category name can do', function(){
-      spyOn(categoryService,'getCategories').andReturn(categories);
+      spyOn(categoryService,'getCategories').and.returnValue(categories);
       spyOn(categoryService,'updateProductsCategory');
       var result = categoryService.changeName(category.name,newCategoryName);
       expect(result[0].name).toBe('食品');
-      expect(categoryService.updateProductsCategory.calls.length).toBe(1);
+      expect(categoryService.updateProductsCategory.calls.count()).toBe(1);
    });
 
 
   it('should the products category can update when category name change', function(){
+    spyOn(localStorageService,'get').and.returnValue(allProducts);
      var result = categoryService.updateProductsCategory(category.name,newCategoryName);
-     expect(localStorageService.get.calls.length).toBe(1);
+     expect(localStorageService.get.calls.count()).toBe(1);
      expect(result.length).toBe(3);
      expect(result[0].category).toBe('食品');
      expect(result[1].category).toBe('食品');
-     expect(localStorageService.get.calls.length).toBe(1);
+     expect(localStorageService.get.calls.count()).toBe(1);
   });
 });
