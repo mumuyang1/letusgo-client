@@ -1,6 +1,6 @@
 'use strict';
 
-xdescribe('Controller: ShoppingMallCtrl', function () {
+describe('Controller: ShoppingMallCtrl', function () {
 
 
   beforeEach(module('letusgoApp'));
@@ -36,14 +36,25 @@ xdescribe('Controller: ShoppingMallCtrl', function () {
         spyOn(scope,'$emit');
         createController();
         expect(scope.$emit).toHaveBeenCalledWith('to-parent-shoppingMallActive');
-    })
+    });
 
     it('should shopping list can show',function(){
 
-      spyOn(CartItemService,'get').andReturn(item);
+      spyOn(CartItemService,'get').and.returnValue(item);
       createController();
       expect(scope.items.length).toBe(2);
       expect(scope.items[0].name).toEqual('水杯');
-      expect(scope.items[1].price).toBe('4.00')
+      expect(scope.items[1].price).toBe('4.00');
     });
+
+    it('should page divider ok',function(){
+
+      spyOn(itemsService,'loadAllProducts');
+      spyOn(itemsService,'getPageTotal');
+      createController();
+      expect(itemsService.loadAllProducts).toHaveBeenCalled();
+      expect(itemsService.getPageTotal).toHaveBeenCalled();
+    });
+
+
   });

@@ -17,10 +17,12 @@ angular.module('letusgoApp')
 
     $scope.finishAddCategory = function(newCategoryName){
       $scope.clickAddCategory = false;
-      $scope.newCategory = {id:0,name:newCategoryName};
       $scope.categories = categoryManageService.getCategories('categories');
+
+      $scope.newCategory = {id:0,name:newCategoryName};
       $scope.newCategory.id = $scope.categories[$scope.categories.length-1].id + 1;
       $scope.categories.push($scope.newCategory);
+      
       categoryManageService.setCategories('categories',$scope.categories);
     };
 

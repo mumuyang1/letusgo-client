@@ -1,6 +1,6 @@
 'use strict';
 
-xdescribe('Controller: CategoryManageCtrl', function () {
+describe('Controller: CategoryManageCtrl', function () {
 
 
   beforeEach(module('letusgoApp'));
@@ -31,10 +31,9 @@ xdescribe('Controller: CategoryManageCtrl', function () {
 
       newCategoryName = '零食';
 
-      spyOn(cartItemService,'get').andReturn('生活用品');
       spyOn(cartItemService,'set');
       spyOn(scope,'$emit');
-      spyOn(categoryService,'getCategories').andReturn(categories);
+      spyOn(categoryService,'getCategories').and.returnValue(categories);
       spyOn(categoryService,'setCategories');
 
   }));
@@ -49,7 +48,7 @@ xdescribe('Controller: CategoryManageCtrl', function () {
   it('should show view and hide add and change ok',function(){
       spyOn(categoryService,'buildCategoryData');
       createController();
-      expect(categoryService.buildCategoryData.calls.length).toBe(1);
+      expect(categoryService.buildCategoryData).toHaveBeenCalled();
       expect(scope.clickAddCategory).toBe(false);
       expect(scope.clickChangeCategory).toBe(false);
       expect(scope.clickDelete).toBe(false);
@@ -67,23 +66,49 @@ xdescribe('Controller: CategoryManageCtrl', function () {
       scope.finishAddCategory(newCategoryName);
       expect(scope.clickAddCategory).toBe(false);
       expect(scope.newCategory.id).toBe(3);
-      expect(categoryService.setCategories.calls.length).toBe(1);
+      expect(scope.categories[2].name).toBe('零食');
+      expect(categoryService.setCategories).toHaveBeenCalled();
   });
 
 
   it('should add category can cancel',function(){
       createController();
       scope.cancelAddCategory();
-      expect(scope.clickAddCategory ).toBe(false);
+      expect(scope.clickAddCategory).toBe(false);
   });
 
 
+  // it('can delete the category when it has none products',function(){
+  //
+  //     spyOn(categoryService,'hasProductsInTheCategory').and.returnValue(false);
+  //     createController();
+  //     scope.deleteCategory();
+  //     expect(categoryService.deleteCategoryButton).toHaveBeenCalled();
+  //     expect(categoryService.getCategorie).toHaveBeenCalled();
+  // });
+
+  it('can not delete the category when it has products',function(){
+      spyOn(categoryService,'hasProductsInTheCategory').and.returnValue(true);
+      createController();
+      scope.deleteCategory();
+      expect(scope.clickDelete).toBe(true);
+      expect(cartItemService.set).toHaveBeenCalled();
+  });
+
   it('should finish delete category can do',function(){
+      spyOn(cartItemService,'get');
       spyOn(categoryService,'deleteCategoryButton');
       createController();
       scope.finishDelete();
-      expect(categoryService.deleteCategoryButton.calls.length).toBe(1);
-      expect(cartItemService.get.calls.length).toBe(2);
+      expect(categoryService.deleteCategoryButton).toHaveBeenCalled();
+      expect(cartItemService.get.calls.count()).toBe(2);
+      expect(scope.clickDelete).toBe(false);
+  });
+
+  it('should delete category can cancel',function(){
+      createController();
+      scope.cancelDelete();
+      expect(scope.clickDelete ).toBe(false);
   });
 
 
@@ -91,18 +116,19 @@ xdescribe('Controller: CategoryManageCtrl', function () {
       createController();
       scope.changeCategory();
       expect(scope.clickChangeCategory).toBe(true);
-      expect(cartItemService.set.calls.length).toBe(1);
+      expect(cartItemService.set).toHaveBeenCalled();
 
   });
 
   it('should finish change category can do',function(){
+      spyOn(cartItemService,'get');
       spyOn(categoryService,'changeName');
       createController();
       scope.finishChangeCategory(newCategoryName);
       expect(scope.clickChangeCategory).toBe(false);
-      expect(cartItemService.get.calls.length).toBe(1);
-      expect(categoryService.changeName.calls.length).toBe(1);
-      expect(categoryService.getCategories.calls.length).toBe(1);
+      expect(cartItemService.get).toHaveBeenCalled();
+      expect(categoryService.changeName).toHaveBeenCalled();
+      expect(categoryService.getCategories).toHaveBeenCalled();
   });
 
   it('should change category can cancel',function(){
