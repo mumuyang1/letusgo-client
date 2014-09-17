@@ -5,13 +5,13 @@ describe('Controller: ShoppingMallCtrl', function () {
 
   beforeEach(module('letusgoApp'));
 
-  var $controller,itemsService,scope,createController,item,CartItemService;
+  var $controller,$routeParams,itemsService,scope,createController,item,CartItemService;
 
 
   beforeEach(inject(function ($injector) {
     scope = $injector.get('$rootScope').$new();
     $controller = $injector.get('$controller');
-
+    $routeParams = $injector.get('$routeParams');
     itemsService = $injector.get('ItemsService');
     CartItemService = $injector.get('CartItemService');
 
@@ -20,6 +20,7 @@ describe('Controller: ShoppingMallCtrl', function () {
       return $controller('ShoppingMallCtrl', {
           $scope: scope,
           ItemsService: itemsService,
+          $routeParams : $routeParams
       });
     };
 

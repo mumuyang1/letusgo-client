@@ -26,13 +26,10 @@ describe('Service: categoryManageService', function () {
                   {barcode:'ITEM000003',category:'饮料',name:'可口可乐',price:'3.00',unit:'瓶'},
                 ];
         newCategoryName = '食品';
-
-        // localStorageService.set('categories',categories);
-        // localStorageService.set('allProducts',allProducts);
         spyOn(localStorageService, 'set');
      });
 
-   it('should get categoryData is right', function(){
+   it('should get categoryData is right when store is null', function(){
       spyOn(localStorageService,'get').and.returnValue(null);
       categoryService.buildCategoryData();
       expect(localStorageService.get.calls.count()).toBe(1);
