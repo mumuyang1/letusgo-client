@@ -1,6 +1,6 @@
 'use strict';
 
-xdescribe('Controller: CartSumsCtrl', function () {
+describe('Controller: CartSumsCtrl', function () {
 
 
   beforeEach(module('letusgoApp'));
@@ -39,34 +39,34 @@ xdescribe('Controller: CartSumsCtrl', function () {
 
   it('should cartSum right when it is null', function(){
     createController();
-    spyOn(cartItemService,'get').andReturn(null);
+    spyOn(cartItemService,'get').and.returnValue(null);
     var temp = cartItemService.get(cartSum);
     expect(temp ? parseInt(temp) : 0).toBe(0);
   });
 
 
   it('should addCartSum can do',function(){
-    spyOn(itemsService,'addCart').andReturn(3);
+    spyOn(itemsService,'addCart').and.returnValue(3);
     createController();
     scope.addCartSum(item);
-    expect(itemsService.addCart.calls.length).toBe(1);
+    expect(itemsService.addCart).toHaveBeenCalled();
     expect(scope.cartsums).toBe(3);
   });
 
 
   it('should set get right',function(){
-    spyOn(cartItemService,'get').andReturn(2);
+    spyOn(cartItemService,'get').and.returnValue(2);
     spyOn(cartItemService,'set');
     createController();
     expect(scope.cartsums).toBe(2);
-    expect(cartItemService.get.calls.length).toBe(2);
-    expect(cartItemService.set.calls.length).toBe(1);
+    expect(cartItemService.get.calls.count()).toBe(2);
+    expect(cartItemService.set).toHaveBeenCalled();
   });
 
   it('should to-parent-add can do',function(){
     createController();
     scope.$digest();
-    spyOn(cartItemService, 'add').andReturn(3);
+    spyOn(cartItemService, 'add').and.returnValue(3);
     $rootScope.$broadcast('to-parent-add');
     scope.$digest();
     expect(scope.cartsums).toBe(3);
@@ -75,7 +75,7 @@ xdescribe('Controller: CartSumsCtrl', function () {
   it('should to-parent-reduce can do',function(){
     createController();
     scope.$digest();
-    spyOn(cartItemService, 'reduce').andReturn(5);
+    spyOn(cartItemService, 'reduce').and.returnValue(5);
     $rootScope.$broadcast('to-parent-reduce');
     scope.$digest();
     expect(scope.cartsums).toBe(5);
@@ -84,7 +84,7 @@ xdescribe('Controller: CartSumsCtrl', function () {
   it('should to-parent-delete can do',function(){
     createController();
     scope.$digest();
-    spyOn(cartItemService, 'delete').andReturn(2);
+    spyOn(cartItemService, 'delete').and.returnValue(2);
     $rootScope.$broadcast('to-parent-delete');
     scope.$digest();
     expect(scope.cartsums).toBe(2);
@@ -93,7 +93,7 @@ xdescribe('Controller: CartSumsCtrl', function () {
   it('should to-parent-pay can do',function(){
     createController();
     scope.$digest();
-    spyOn(cartItemService, 'pay').andReturn(0);
+    spyOn(cartItemService, 'pay').and.returnValue(0);
     $rootScope.$broadcast('to-parent-pay');
     scope.$digest();
     expect(scope.cartsums).toBe(0);

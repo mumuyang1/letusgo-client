@@ -65,23 +65,24 @@ describe('Controller: CartCtrl', function () {
       expect(cartItemService.getTotal).toHaveBeenCalled();
   });
 
-  // it('should reduceButton can do',function(){
-  //
-  //     createController();
-  //     scope.reduceButton(item);
-  //
-  //     expect(scope.$emit).toHaveBeenCalledWith('to-parent-reduce',item,scope.cartItems);
-  //     expect(cartItemService.updateTotalAndCart.calls.count()).toBe(1);
-  // });
+  it('should reduceButton can do',function(){
 
-  // it('should deleteButton can do',function(){
-  //
-  //     createController();
-  //     spyOn(scope,'$emit');
-  //     scope.deleteButton(item);
-  //     expect(scope.$emit).toHaveBeenCalledWith('to-parent-delete',item,scope.cartItems);
-  //     expect(cartItemService.get.calls.length).toBe(3);
-  //     expect(cartItemService.getTotal).toHaveBeenCalled();
-  // });
+      createController();
+      scope.reduceButton(item);
+
+      expect(scope.$emit).toHaveBeenCalledWith('to-parent-reduce',item,scope.cartItems);
+      expect(cartItemService.get).toHaveBeenCalled();
+      expect(cartItemService.getTotal).toHaveBeenCalled();
+  });
+
+  it('should deleteButton can do',function(){
+
+      createController();
+      scope.deleteButton(item);
+
+      expect(scope.$emit).toHaveBeenCalledWith('to-parent-delete',item,scope.cartItems);
+      expect(cartItemService.get).toHaveBeenCalled();
+      expect(cartItemService.getTotal).toHaveBeenCalled();
+  });
 
 });
