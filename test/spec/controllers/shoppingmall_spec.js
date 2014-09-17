@@ -47,14 +47,49 @@ describe('Controller: ShoppingMallCtrl', function () {
       expect(scope.items[1].price).toBe('4.00');
     });
 
+
     it('should page divider ok',function(){
 
       spyOn(itemsService,'loadAllProducts');
-      spyOn(itemsService,'getPageTotal');
+      spyOn(itemsService,'getPageTotal').and.returnValue([1,2,3,4,5]);
+      $routeParams.pageNow = 3;
       createController();
+
+      scope.pageNow = parseInt($routeParams.pageNow);
+
+      expect(scope.pageNow).toBe(3);
+      expect(scope.previous).toBe(2);
+      expect(scope.next).toBe(4);
       expect(itemsService.loadAllProducts).toHaveBeenCalled();
       expect(itemsService.getPageTotal).toHaveBeenCalled();
     });
 
+    it('should page divider ok when page is 1',function(){
+
+      spyOn(itemsService,'loadAllProducts');
+      spyOn(itemsService,'getPageTotal').and.returnValue([1,2,3,4,5]);
+      $routeParams.pageNow = 1;
+      createController();
+
+      scope.pageNow = parseInt($routeParams.pageNow);
+
+      expect(scope.pageNow).toBe(1);
+      expect(scope.previous).toBe(1);
+      expect(scope.next).toBe(2);
+    });
+
+    it('should page divider ok when the current page is last page',function(){
+
+      spyOn(itemsService,'loadAllProducts');
+      spyOn(itemsService,'getPageTotal').and.returnValue([1,2,3,4,5]);
+      $routeParams.pageNow = 5;
+      createController();
+
+      scope.pageNow = parseInt($routeParams.pageNow);
+
+      expect(scope.pageNow).toBe(5);
+      expect(scope.previous).toBe(4);
+      expect(scope.next).toBe(5);
+    });
 
   });
