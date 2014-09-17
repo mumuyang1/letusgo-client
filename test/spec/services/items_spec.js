@@ -91,8 +91,6 @@ describe('Service: itemsService', function () {
         itemsService.getCartProducts(item);
 
         expect(cartService.set).toHaveBeenCalled();
-        // expect(cartService.getCartItems).toHaveBeenCalled();
-        // expect(cartService.get).toHaveBeenCalled();
       });
 
 
