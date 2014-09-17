@@ -5,32 +5,32 @@ angular.module('letusgoApp')
 
         $scope.$emit('to-parent-cartActive');
         $scope.cartsums = CartItemService.get('cartSum');
-        $scope.cartItems = CartItemService.get('cartProduct');
-        $scope.total = CartItemService.getTotal($scope.cartItems);
+        updateTotalAndCart();
 
-        $scope.updateTotalAndCart = function(){
+
+        function updateTotalAndCart(){
              $scope.cartItems = CartItemService.get('cartProduct');
              $scope.total = CartItemService.getTotal($scope.cartItems);
-        };
+        }
 
 
         $scope.addButton = function (cartItems){
 
             $scope.$emit('to-parent-add',cartItems,$scope.cartItems);
-            $scope.updateTotalAndCart();
+            updateTotalAndCart();
         };
 
 
         $scope.reduceButton = function (cartItems) {
 
             $scope.$emit('to-parent-reduce',cartItems,$scope.cartItems);
-            $scope.updateTotalAndCart();
+            updateTotalAndCart();
         };
 
 
         $scope.deleteButton = function (cartItems) {
             $scope.$emit('to-parent-delete',cartItems,$scope.cartItems);
-            $scope.updateTotalAndCart();
+            updateTotalAndCart();
         };
 
     });
