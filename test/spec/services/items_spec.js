@@ -38,45 +38,69 @@ describe('Service: itemsService', function () {
        spyOn(cartService, 'set');
    });
 
-  //  it('should items is right when store is null', function(){
-  //       spyOn(cartService,'get').and.returnValue(null);
-   //
-  //       var items = itemsService.getItems();
-  //       // console.log(items[0].name+'??????????????//');
-  //       expect(items[0].name).toEqual('苹果');
-  //       expect(items[8].name).toEqual('翡翠手镯');
-  //       expect(items.length).toBe(9);
-   //
-  //  });
+     it('should items is right when store is null', function(){
+         spyOn(cartService,'get').and.returnValue(null);
+
+         itemsService.getItems();
+         expect(cartService.set).toHaveBeenCalled();
+         expect(cartService.get).toHaveBeenCalled();
+     });
+
+     it('should items is right when store is not null', function(){
+         spyOn(cartService,'get').and.returnValue(allProducts);
+
+         var items = itemsService.getItems();
+         expect(items.length).toBe(5);
+         expect(cartService.get).toHaveBeenCalled();
+     });
+
+      it('should get pageTotal is right', function(){
+          spyOn(itemsService,'loadAllProducts').and.returnValue(allProducts);
+
+          var result = itemsService.getPageTotal();
+          expect(itemsService.loadAllProducts).toHaveBeenCalled();
+          expect(result.length).toBe(2);
+      });
 
 
-    it('should cartSum in addCart is right',function(){
-      spyOn(cartService,'get').and.returnValue(3);
-      spyOn(itemsService,'getCartProducts');
+      it('should cartSum in addCart is right',function(){
+        spyOn(cartService,'get').and.returnValue(3);
+        spyOn(itemsService,'getCartProducts');
 
-      var result = itemsService.addCart(item);
-      expect(result).toBe(4);
-      expect(cartService.set).toHaveBeenCalled();
-      expect(itemsService.getCartProducts).toHaveBeenCalled();
-    });
+        var result = itemsService.addCart(item);
+        expect(result).toBe(4);
+        expect(cartService.set).toHaveBeenCalled();
+        expect(itemsService.getCartProducts).toHaveBeenCalled();
+      });
 
-    it('should get cartProducts is right',function(){
-      spyOn(cartService,'getCartItems').and.returnValue(cartItem);
-      spyOn(cartService,'get').and.returnValue(cartProducts);
+      it('should get cartProducts is right',function(){
+        spyOn(cartService,'getCartItems').and.returnValue(cartItem);
+        spyOn(cartService,'get').and.returnValue(cartProducts);
 
-      itemsService.getCartProducts(item);
+        itemsService.getCartProducts(item);
 
-      expect(cartService.set).toHaveBeenCalled();
-      expect(cartService.getCartItems).toHaveBeenCalled();
-      expect(cartService.get).toHaveBeenCalled();
-    });
+        expect(cartService.set).toHaveBeenCalled();
+        expect(cartService.getCartItems).toHaveBeenCalled();
+        expect(cartService.get).toHaveBeenCalled();
+      });
+
+      it('should get cartProducts is right firstly',function(){
+        spyOn(cartService,'getCartItems').and.returnValue(cartItem);
+        spyOn(cartService,'get').and.returnValue(null);
+
+        itemsService.getCartProducts(item);
+
+        expect(cartService.set).toHaveBeenCalled();
+        // expect(cartService.getCartItems).toHaveBeenCalled();
+        // expect(cartService.get).toHaveBeenCalled();
+      });
 
 
-   it('should judge can do', function(){
+     it('should judge can do', function(){
 
-     var result = itemsService.judgeIsExist(cartProducts,item);
-     expect(result).toBe(true);
-   });
+       var result = itemsService.judgeIsExist(cartProducts,item);
+       expect(result).toBe(true);
+     });
 
 
      it('should load all products can do when is the page', function(){
@@ -85,6 +109,7 @@ describe('Service: itemsService', function () {
        var result = itemsService.loadAllProducts(true);
        expect(itemsService.getItems).toHaveBeenCalled();
        expect(result.length).toBe(3);
+       expect(result[2].name).toBe('菠萝');
      });
 
 
@@ -94,5 +119,6 @@ describe('Service: itemsService', function () {
        var result = itemsService.loadAllProducts(false);
        expect(itemsService.getItems).toHaveBeenCalled();
        expect(result.length).toBe(5);
+       expect(result[3].name).toBe('雪碧');
      });
 });
