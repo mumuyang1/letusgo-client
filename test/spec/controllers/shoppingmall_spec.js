@@ -5,8 +5,7 @@ describe('Controller: ShoppingMallCtrl', function () {
 
   beforeEach(module('letusgoApp'));
 
-  var ShoppingMallCtrl,$controller,itemsService,
-    scope,createController,$scope,item,CartItemService;
+  var $controller,itemsService,scope,createController,item,CartItemService;
 
 
   beforeEach(inject(function ($injector) {
@@ -53,7 +52,7 @@ describe('Controller: ShoppingMallCtrl', function () {
       spyOn(itemsService,'getPageTotal');
       createController();
       expect(itemsService.loadAllProducts).toHaveBeenCalled();
-      expect(itemsService.getPageTotal).toHaveBeenCalled();      
+      expect(itemsService.getPageTotal).toHaveBeenCalled();
     });
 
 
