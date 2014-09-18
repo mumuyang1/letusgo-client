@@ -13,7 +13,6 @@
             ];
           var categories = localStorageService.get('categories');
           return categories ? categories : localStorageService.set('categories', categoryData);
-
       };
 
 
@@ -26,15 +25,12 @@
         localStorageService.set(key,value);
       };
 
-      this.hasProductsInTheCategory = function(name){
-        var products = localStorageService.get('allProducts');
-        var has;
 
-        _.forEach(products,function(product){
-            has = _.contains(product, name);
-        });
-          return has;
+      this.hasProductsInTheCategory = function(name){
+          var products = localStorageService.get('allProducts');
+          return _.any(products,{ category: name});
       };
+
 
       this.deleteCategoryButton = function(category){
 
