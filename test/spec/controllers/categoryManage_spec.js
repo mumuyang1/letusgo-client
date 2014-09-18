@@ -68,6 +68,7 @@ describe('Controller: CategoryManageCtrl', function () {
       expect(scope.newCategory.id).toBe(3);
       expect(scope.categories[2].name).toBe('零食');
       expect(categoryService.setCategories).toHaveBeenCalled();
+      expect(categoryService.getCategories).toHaveBeenCalled();
   });
 
 
@@ -78,14 +79,14 @@ describe('Controller: CategoryManageCtrl', function () {
   });
 
 
-  // it('can delete the category when it has none products',function(){
-  //
-  //     spyOn(categoryService,'hasProductsInTheCategory').and.returnValue(false);
-  //     createController();
-  //     scope.deleteCategory();
-  //     expect(categoryService.deleteCategoryButton).toHaveBeenCalled();
-  //     expect(categoryService.getCategories).toHaveBeenCalled();
-  // });
+  it('can delete the category when it has none products',function(){
+
+      spyOn(categoryService,'hasProductsInTheCategory').and.returnValue(false);
+      createController();
+      scope.deleteCategory(categories[0].name);
+      expect(categoryService.deleteCategoryButton).toHaveBeenCalled();
+      expect(categoryService.getCategories).toHaveBeenCalled();
+  });
 
   it('can not delete the category when it has products',function(){
       spyOn(categoryService,'hasProductsInTheCategory').and.returnValue(true);
@@ -114,7 +115,8 @@ describe('Controller: CategoryManageCtrl', function () {
 
   it('should change category view can show',function(){
       createController();
-      scope.changeCategory();
+      scope.changeCategory(newCategoryName);
+      expect(scope.newName).toBe('零食');
       expect(scope.clickChangeCategory).toBe(true);
       expect(cartItemService.set).toHaveBeenCalled();
 
