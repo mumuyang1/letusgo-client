@@ -48,14 +48,17 @@
 
 
         this.delete = function(cartItem,cartProduct){
+
+          var cartSums = localStorageService.get('cartSum');
+
            for(var i = 0; i < cartProduct.length; i++){
+
              if(cartProduct[i].items.name === cartItem.name){
 
-               var cartSums = localStorageService.get('cartSum');
                cartSums  = cartSums - cartProduct[i].inputCount;
                cartProduct = _.without(cartProduct,cartProduct[i]);
-             localStorageService.set('cartProduct',cartProduct);
-             localStorageService.set('cartSum',cartSums);
+               localStorageService.set('cartProduct',cartProduct);
+               localStorageService.set('cartSum',cartSums);
              }
            }
             return cartSums;
