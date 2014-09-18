@@ -36,14 +36,15 @@ describe('Service: categoryManageService', function () {
       expect(localStorageService.set.calls.count()).toBe(1);
    });
 
+
    it('should get categoryData is right when store is not null', function(){
       spyOn(localStorageService,'get').and.returnValue(categories);
       var result =  categoryService.buildCategoryData();
       expect(localStorageService.get.calls.count()).toBe(1);
       expect(result.length).toBe(1);
       expect(result[0].name).toBe('水果');
-
    });
+
 
    it('should get categories function can do', function(){
       spyOn(localStorageService,'get').and.returnValue(categories);
@@ -57,6 +58,18 @@ describe('Service: categoryManageService', function () {
       expect(localStorageService.set.calls.count()).toBe(1);
    });
 
+
+   it('can judge if category contains products', function(){
+      spyOn(localStorageService,'get').and.returnValue(allProducts);
+      var result = categoryService.hasProductsInTheCategory(category.name);
+      expect(result).toBe(true);
+   });
+
+   it('can judge if category contains no product', function(){
+      spyOn(localStorageService,'get').and.returnValue(allProducts);
+      var result = categoryService.hasProductsInTheCategory(newCategoryName);
+      expect(result).toBe(false);
+   });
 
    it('should deleteCategoryButton can do', function(){
       spyOn(categoryService,'getCategories').and.returnValue(categories);
