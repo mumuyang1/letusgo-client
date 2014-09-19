@@ -3,15 +3,16 @@
   angular.module('letusgoApp')
     .service('productManageService', function (localStorageService) {
 
+
     this.deleteProductButton = function(name){
 
       var allProducts = localStorageService.get('allProducts');
-      for(var i = 0; i < allProducts.length; i++){
-        if(allProducts[i].name === name){
+      _.forEach(allProducts,function(product){
+        if(product.name === name){
 
-          allProducts = _.without(allProducts,allProducts[i]);
+          allProducts = _.without(allProducts,product);
         }
-      }
+      });
       localStorageService.set('allProducts',allProducts);
       return allProducts;
     };
