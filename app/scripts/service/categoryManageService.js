@@ -30,31 +30,32 @@
           var products = localStorageService.get('allProducts');
           return _.any(products,{ category: name});
       };
-
+      
 
       this.deleteCategoryButton = function(category){
 
         var categories = this.getCategories();
-        for(var i = 0; i < categories.length; i++){
-          if(categories[i].name === category){
+        _.forEach(categories,function(categoryEach){
+          if(categoryEach.name === category){
 
-            categories = _.without(categories,categories[i]);
-            this.setCategories('categories',categories);
+            categories = _.without(categories,categoryEach);
+            localStorageService.set('categories',categories);
           }
-        }
+        });
          this.deleteProductsWithDeleteCategory(category);
       };
 
 
       this.deleteProductsWithDeleteCategory = function(category){
         var allProducts = localStorageService.get('allProducts');
-        for(var i = 0; i < allProducts.length; i++){
-          if(allProducts[i].category === category){
 
-            allProducts = _.without(allProducts,allProducts[i]);
-            i--;
-          }
-        }
+        _.forEach(allProducts,function(product, index){
+            if(product.category === category){
+
+              allProducts = _.without(allProducts,product);
+              index --;
+            }
+          });
         localStorageService.set('allProducts',allProducts);
         return allProducts;
       };

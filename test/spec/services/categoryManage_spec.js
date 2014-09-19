@@ -74,9 +74,8 @@ describe('Service: categoryManageService', function () {
    it('should deleteCategoryButton can do', function(){
       spyOn(categoryService,'getCategories').and.returnValue(categories);
       spyOn(categoryService,'deleteProductsWithDeleteCategory');
-      spyOn(categoryService,'setCategories');
       categoryService.deleteCategoryButton(category.name);
-      expect(categoryService.setCategories.calls.count()).toBe(1);
+      expect(localStorageService.set.calls.count()).toBe(1);
       expect(categoryService.deleteProductsWithDeleteCategory.calls.count()).toBe(1);
    });
 
