@@ -51,19 +51,17 @@
 
           var cartSums = localStorageService.get('cartSum');
 
-           for(var i = 0; i < cartProduct.length; i++){
+          _.forEach(cartProduct,function(cart){
+            if(cart.items.name === cartItem.name){
 
-             if(cartProduct[i].items.name === cartItem.name){
-
-               cartSums  = cartSums - cartProduct[i].inputCount;
-               cartProduct = _.without(cartProduct,cartProduct[i]);
-               localStorageService.set('cartProduct',cartProduct);
-               localStorageService.set('cartSum',cartSums);
-             }
-           }
+              cartSums  = cartSums - cart.inputCount;
+              cartProduct = _.without(cartProduct,cart);
+              localStorageService.set('cartProduct',cartProduct);
+              localStorageService.set('cartSum',cartSums);
+            }
+          });
             return cartSums;
         };
-
 
         this.getTotal = function (cartProduct) {
             var total = 0;

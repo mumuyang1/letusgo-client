@@ -43,7 +43,6 @@ angular.module('letusgoApp')
             unit : productToChange.unit,
             category : productToChange.category
         };
-
         $scope.clickChangeProduct = true;
         $scope.controlLayout = false;
         $scope.categories = categoryManageService.getCategories();
@@ -53,7 +52,6 @@ angular.module('letusgoApp')
       $scope.finishChangeProduct = function(newName,newPrice,newUnit,newCategory){
         $scope.clickChangeProduct = false;
         $scope.controlLayout = true;
-
         $scope.productToBeChange = CartItemService.get('productToChange');
         productManageService.changeProduct($scope.productToBeChange,newName,newPrice,newUnit,newCategory);
         $scope.allProducts = CartItemService.get('allProducts');
