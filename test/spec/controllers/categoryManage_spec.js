@@ -6,7 +6,7 @@ describe('Controller: CategoryManageCtrl', function () {
   beforeEach(module('letusgoApp'));
 
   var $controller,categoryService,scope,createController,cartItemService,
-      categories,newCategoryName;
+      categories,newCategoryName,allProducts,localStorageService;
 
   beforeEach(inject(function ($injector) {
     scope = $injector.get('$rootScope').$new();
@@ -14,13 +14,15 @@ describe('Controller: CategoryManageCtrl', function () {
 
     cartItemService = $injector.get('CartItemService');
     categoryService = $injector.get('categoryManageService');
+    localStorageService = $injector.get('localStorageService');
 
     createController = function(){
 
       return $controller('CategoryManageCtrl', {
           $scope: scope,
           CartItemService: cartItemService,
-          categoryManageService: categoryService
+          categoryManageService: categoryService,
+          localStorageService: localStorageService
       });
     };
 
@@ -30,6 +32,14 @@ describe('Controller: CategoryManageCtrl', function () {
         ];
 
       newCategoryName = '零食';
+
+      allProducts = [
+              {barcode:'ITEM000001',category:'水果',name:'苹果',price:'3.00',unit:'斤'},
+              {barcode:'ITEM000002',category:'水果',name:'香蕉',price:'3.50',unit:'斤'},
+              {barcode:'ITEM000003',category:'水果',name:'菠萝',price:'4.00',unit:'个'},
+              {barcode:'ITEM000004',category:'饮料',name:'雪碧',price:'3.00',unit:'瓶'},
+              {barcode:'ITEM000005',category:'饮料',name:'可口可乐',price:'3.00',unit:'瓶'}
+            ];
 
       spyOn(cartItemService,'set');
       spyOn(scope,'$emit');
@@ -82,6 +92,8 @@ describe('Controller: CategoryManageCtrl', function () {
   it('can delete the category when it has none products',function(){
 
       spyOn(categoryService,'hasProductsInTheCategory').and.returnValue(false);
+      spyOn(localStorageService,'get').and.returnValue(allProducts);
+      spyOn(categoryService,'deleteCategoryButton');
       createController();
       scope.deleteCategory(categories[0].name);
       expect(categoryService.deleteCategoryButton).toHaveBeenCalled();
