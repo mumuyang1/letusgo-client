@@ -37,7 +37,7 @@ angular.module('letusgoApp').service('ItemsService',function(CartItemService){
       this.getPageTotal = function(){
 
         var totalCount = this.loadAllProducts(null).length;
-        var pageCount = totalCount % 3 == 0 ? parseInt(totalCount / 3) : parseInt(totalCount / 3) + 1;
+        var pageCount = totalCount % 3 === 0 ? parseInt(totalCount / 3) : parseInt(totalCount / 3) + 1;
         return _.range(1,pageCount + 1);
       };
 
@@ -79,7 +79,6 @@ angular.module('letusgoApp').service('ItemsService',function(CartItemService){
               return true;
             }
         }
-
         return false;
       };
 });

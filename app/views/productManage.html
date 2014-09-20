@@ -34,8 +34,7 @@
       <input type="submit" class="btn btn-info btn-sm" value="取消" ng-click="cancelAddProduct()">
     </div>
     <div class="col-md-4 text-left form-inline" ng-show="clickChangeProduct">
-      分类：<select class="form-control" ng-model="itemToChange.category">
-                <option ng-repeat="category in categories" value="{{category.name}}">{{category.name}}</option>
+      分类：<select class="form-control" ng-model="itemToChange.category" ng-options="category.name as category.name for category in categories">
            </select><br>
       名称：<input class="form-control" ng-model="itemToChange.name"><br>
       单价：<input class="form-control" ng-model="itemToChange.price"><br>
