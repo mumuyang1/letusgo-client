@@ -18,6 +18,8 @@
     };
 
 
+
+
     this.changeProduct = function(productToBeChange,newName,newPrice,newUnit,newCategory){
 
       var allProducts = localStorageService.get('allProducts');

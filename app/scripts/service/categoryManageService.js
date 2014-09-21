@@ -1,18 +1,14 @@
 'use strict';
 
   angular.module('letusgoApp')
-    .service('categoryManageService', function (localStorageService) {
+    .service('categoryManageService', function (localStorageService,$http) {
 
-      this.buildCategoryData = function(){
+      this.getCategory = function(callback){
 
-          var categoryData = [
-              {id: 1, name: '水果'},
-              {id: 2, name: '饮料'},
-              {id: 3, name: '生活用品'},
-              {id: 4, name: '饰品'}
-            ];
-          var categories = localStorageService.get('categories');
-          return categories ? categories : localStorageService.set('categories', categoryData);
+          $http.get('/api/categories')
+            .success(function (data) {
+              callback(data);
+            });
       };
 
 
@@ -26,63 +22,56 @@
       };
 
 
-      this.hasProductsInTheCategory = function(name){
-          var products = localStorageService.get('allProducts');
-          return _.any(products,{ category: name});
+
+      this.addCategory = function(newCategoryName){
+        $http.post('/api/categories/'+newCategoryName);
       };
-      
 
-      this.deleteCategoryButton = function(category){
 
+      this.hasProductsInTheCategory = function(name,callback){
+
+          $http.get('api/items').success(function (products) {
+
+            callback(_.any(products,{ category: name}));
+          });
+
+      };
+
+
+      this.deleteCategoryButton = function(id){
+
+          $http.delete('/api/categories/'+id);
+      };
+
+
+/*      this.changeName = function(category,newName){
         var categories = this.getCategories();
         _.forEach(categories,function(categoryEach){
-          if(categoryEach.name === category){
-
-            categories = _.without(categories,categoryEach);
-            localStorageService.set('categories',categories);
-          }
-        });
-         this.deleteProductsWithDeleteCategory(category);
-      };
-
-
-      this.deleteProductsWithDeleteCategory = function(category){
-        var allProducts = localStorageService.get('allProducts');
-
-        _.forEach(allProducts,function(product, index){
-            if(product.category === category){
-
-              allProducts = _.without(allProducts,product);
-              index --;
-            }
-          });
-        localStorageService.set('allProducts',allProducts);
-        return allProducts;
-      };
-
-
-      this.changeName = function(categoryName,newName){
-        var categories = this.getCategories();
-        _.forEach(categories,function(category){
-          if(category.name === categoryName){
-              category.name = newName;
+          if(categoryEach.id === category.id){
+              categoryEach.name = newName;
               localStorageService.set('categories',categories);
           }
         });
-        this.updateProductsCategory(categoryName,newName);
+        this.updateProductsCategory(category.id,newName);
         return categories;
+      };*/
+
+
+      this.changeName = function(id,newName){
+
+        $http.put('/api/categories/'+id,{categoryName:newName});
       };
 
 
-      this.updateProductsCategory = function(categoryName,newName){
-
-        var allProducts = localStorageService.get('allProducts');
-        _.forEach(allProducts,function(product){
-          if(product.category === categoryName){
-            product.category = newName;
-            localStorageService.set('allProducts',allProducts);
-          }
-        });
-        return allProducts;
-      };
+//      this.updateProductsCategory = function(categoryName,newName){
+//
+//        var allProducts = localStorageService.get('allProducts');
+//        _.forEach(allProducts,function(product){
+//          if(product.category === categoryName){
+//            product.category = newName;
+//            localStorageService.set('allProducts',allProducts);
+//          }
+//        });
+//        return allProducts;
+//      };
 });

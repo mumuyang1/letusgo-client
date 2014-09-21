@@ -4,7 +4,13 @@ angular.module('letusgoApp')
 .controller('CategoryManageCtrl', function ($scope,categoryManageService,CartItemService) {
 
     $scope.$emit('to-parent-productManageActive');
-    $scope.categories = categoryManageService.buildCategoryData();
+    // $scope.categories = categoryManageService.buildCategoryData('categories');
+
+    categoryManageService.getCategory(function(data){
+
+      $scope.categories = data;
+    });
+
     $scope.clickAddCategory = false;
     $scope.clickChangeCategory = false;
     $scope.clickDelete = false;
@@ -16,14 +22,16 @@ angular.module('letusgoApp')
 
 
     $scope.finishAddCategory = function(newCategoryName){
-      $scope.clickAddCategory = false;
-      $scope.categories = categoryManageService.getCategories('categories');
 
-      $scope.newCategory = {id:0,name:newCategoryName};
-      $scope.newCategory.id = $scope.categories[$scope.categories.length-1].id + 1;
-      $scope.categories.push($scope.newCategory);
-      
-      categoryManageService.setCategories('categories',$scope.categories);
+      if(newCategoryName){
+        categoryManageService.addCategory(newCategoryName);
+      }
+
+      $scope.clickAddCategory = false;
+
+      categoryManageService.getCategory(function(data){
+        $scope.categories = data;
+      });
     };
 
 
@@ -34,15 +42,23 @@ angular.module('letusgoApp')
 
     $scope.deleteCategory = function(category){
 
-      if(categoryManageService.hasProductsInTheCategory(category)){
-        $scope.clickDelete = true;
-        CartItemService.set('categoryToDelete',category);
-      }
-      else{
 
-        categoryManageService.deleteCategoryButton(category);
-        $scope.categories = categoryManageService.getCategories();
-      }
+      categoryManageService.hasProductsInTheCategory(category.name,function(data){
+        console.log(data);
+        if(data){
+          $scope.clickDelete = true;
+          CartItemService.set('categoryToDelete',category.id);
+        }else{
+
+          categoryManageService.deleteCategoryButton(category.id);
+
+          categoryManageService.getCategory(function(data){
+
+            $scope.categories = data;
+          });
+
+        }
+      });
     };
 
     $scope.finishDelete = function(){
@@ -50,25 +66,29 @@ angular.module('letusgoApp')
       categoryManageService.deleteCategoryButton(categoryToDelete);
       $scope.categories = CartItemService.get('categories');
       $scope.clickDelete = false;
-
     };
+
 
     $scope.cancelDelete = function(){
       $scope.clickDelete = false;
     };
 
-    $scope.changeCategory = function(categoryName){
-      $scope.newName = categoryName;
+    $scope.changeCategory = function(category){
+      $scope.newName = category.name;
       $scope.clickChangeCategory = true;
-      CartItemService.set('categoryToChange',categoryName);
+      CartItemService.set('categoryToChange',category.id);
     };
 
 
     $scope.finishChangeCategory = function(newName){
       $scope.clickChangeCategory = false;
-      $scope.categoryName = CartItemService.get('categoryToChange');
-      categoryManageService.changeName($scope.categoryName,newName);
-      $scope.categories = categoryManageService.getCategories();
+      $scope.categoryId = CartItemService.get('categoryToChange');
+      categoryManageService.changeName($scope.categoryId,newName);
+
+      categoryManageService.getCategory(function(data){
+
+        $scope.categories = data;
+      });
     };
 
 

@@ -1,18 +1,28 @@
 'use strict';
 angular.module('letusgoApp')
-  .controller('ProductManageCtrl', function ($scope,CartItemService,categoryManageService,productManageService){
+  .controller('ProductManageCtrl', function ($http,$scope,CartItemService,categoryManageService,productManageService,ItemsService){
 
-      $scope.allProducts = CartItemService.get('allProducts');
+
+      ItemsService.getItems(function(data){
+
+        $scope.allProducts = data;
+      });
+
       $scope.$emit('to-parent-productManageActive');
 
       $scope.controlLayout = true;
       $scope.clickAddProduct = false;
       $scope.clickChangeProduct = false;
 
-      $scope.addProduct = function(){
+      $scope.addProduct = function(callback){
         $scope.clickAddProduct = true;
         $scope.controlLayout = false;
-        $scope.categories = categoryManageService.getCategories();
+//        $scope.categories = categoryManageService.getCategories();
+        $http.get('/api/categories')
+          .success(function (data) {
+            $scope.categories  =  data;
+            callback(data);
+          });
       };
 
       $scope.finishAddProduct = function(name,price,unit,category){
