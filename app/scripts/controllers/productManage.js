@@ -55,28 +55,32 @@ angular.module('letusgoApp')
       };
 
 
-      $scope.changeProduct = function(name){
+      $scope.changeProduct = function(item){
 
-        var productToChange = productManageService.getProductByName(name);
-        $scope.itemToChange = {
-            name : name,
-            price : productToChange.price,
-            unit : productToChange.unit,
-            category : productToChange.category
-        };
-        $scope.clickChangeProduct = true;
-        $scope.controlLayout = false;
-        $scope.categories = categoryManageService.getCategories();
-        CartItemService.set('productToChange',name);
+        categoryManageService.getCategoryById(item.categoryId,function(data){
+
+          $scope.itemToChange = {
+            name : item.name,
+            price : item.price,
+            unit : item.unit,
+            categoryId : item.categoryId,
+            category : data
+          };
+          CartItemService.set('productToChange',item.barcode);
+          $scope.clickChangeProduct = true;
+          $scope.controlLayout = false;
+        });
       };
 
 
       $scope.finishChangeProduct = function(newName,newPrice,newUnit,newCategory){
         $scope.clickChangeProduct = false;
         $scope.controlLayout = true;
-        $scope.productToBeChange = CartItemService.get('productToChange');
-        productManageService.changeProduct($scope.productToBeChange,newName,newPrice,newUnit,newCategory);
-        $scope.allProducts = CartItemService.get('allProducts');
+
+        $scope.productToChange = CartItemService.get('productToChange');
+        productManageService.changeProduct($scope.productToChange,newName,newPrice,newUnit,newCategory);
+        
+        refresh();
       };
 
 

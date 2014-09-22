@@ -23,6 +23,7 @@
 
 
     this.changeProduct = function(id,newName,newPrice,newUnit,newCategoryId){
+      console.log(id+'===========');
 
       $http.put('/api/items/'+id,
           {
@@ -48,30 +49,11 @@
   };
 
 
-    this.getProductByName = function(name){
-
-      var products = localStorageService.get('allProducts');
-      return _.find(products,{name : name});
-    };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//    this.getProductByName = function(name){
+//
+//      var products = localStorageService.get('allProducts');
+//      return _.find(products,{name : name});
+//    };
 
 
   });
