@@ -57,15 +57,15 @@
        </div>
        <div class="panel-body" ng-repeat="item in allProducts | filter:searchText">
          <div class="row text-center">
-           <div class="col-md-2 form-group">{{item.category}}</div>
+           <div class="col-md-2 form-group">{{item.category.name}}</div>
            <div class="col-md-2 form-group">{{item.name}}</div>
            <div class="col-md-2 form-group">{{item.price}}</div>
            <div class="col-md-2 form-group">{{item.unit}}</div>
            <div class="col-md-2 form-group">
-               <button ng-click="changeProduct(item.name)" type="button" class="btn btn-primary btn-sm add">修改该商品</button>
+               <button ng-click="changeProduct(item.barcode)" type="button" class="btn btn-primary btn-sm add">修改该商品</button>
            </div>
            <div class="col-md-2 form-group">
-             <button ng-click="deleteProduct(item.name)" type="button" class="btn btn-danger btn-sm add">删除该商品</button>
+             <button ng-click="deleteProduct(item.barcode)" type="button" class="btn btn-danger btn-sm add">删除该商品</button>
            </div>
          </div>
        </div>

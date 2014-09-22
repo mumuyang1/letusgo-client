@@ -17,7 +17,6 @@ angular.module('letusgoApp')
       $scope.addProduct = function(callback){
         $scope.clickAddProduct = true;
         $scope.controlLayout = false;
-//        $scope.categories = categoryManageService.getCategories();
         $http.get('/api/categories')
           .success(function (data) {
             $scope.categories  =  data;
@@ -72,9 +71,13 @@ angular.module('letusgoApp')
         $scope.controlLayout = true;
       };
 
-      $scope.deleteProduct = function(name){
-        productManageService.deleteProductButton(name);
-        $scope.allProducts = CartItemService.get('allProducts');
+      $scope.deleteProduct = function(id){
+
+        productManageService.deleteProductButton(id);
+        ItemsService.getItems(function(data){
+
+          $scope.allProducts = data;
+        });
       };
 
   });

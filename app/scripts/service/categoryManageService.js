@@ -3,23 +3,42 @@
   angular.module('letusgoApp')
     .service('categoryManageService', function (localStorageService,$http) {
 
-      this.getCategory = function(callback){
-
+      this.getCategories = function(callback){
           $http.get('/api/categories')
             .success(function (data) {
+
+              if(!data){
+                $http.post('/api/categories/');
+              }
+
               callback(data);
+
             });
       };
 
 
-      this.getCategories = function(){
-        return localStorageService.get('categories');
-      };
+      this.getCategoryById = function(id,callback){
 
+        this.getCategories(function(categories){
 
-      this.setCategories = function(key,value){
-        localStorageService.set(key,value);
-      };
+          var data =  _.find(categories,function(category){
+
+              return category.id === id;
+
+          });
+          callback(data);
+
+        });
+     };
+
+//      this.getCategoryById = function(id,callback){
+//        this.loadAllCategories(function(categories){
+//          var result = _.find(categories,function(category){
+//            return category.id+'' === ''+id;
+//          });
+//          callback(result);
+//        });
+//      };
 
 
 
@@ -44,18 +63,6 @@
       };
 
 
-/*      this.changeName = function(category,newName){
-        var categories = this.getCategories();
-        _.forEach(categories,function(categoryEach){
-          if(categoryEach.id === category.id){
-              categoryEach.name = newName;
-              localStorageService.set('categories',categories);
-          }
-        });
-        this.updateProductsCategory(category.id,newName);
-        return categories;
-      };*/
-
 
       this.changeName = function(id,newName){
 
@@ -63,15 +70,5 @@
       };
 
 
-//      this.updateProductsCategory = function(categoryName,newName){
-//
-//        var allProducts = localStorageService.get('allProducts');
-//        _.forEach(allProducts,function(product){
-//          if(product.category === categoryName){
-//            product.category = newName;
-//            localStorageService.set('allProducts',allProducts);
-//          }
-//        });
-//        return allProducts;
-//      };
+
 });

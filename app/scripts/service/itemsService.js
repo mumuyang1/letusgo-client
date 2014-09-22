@@ -4,11 +4,15 @@ angular.module('letusgoApp').service('ItemsService',function(CartItemService,$ht
 
       this.getItems = function(callback){
 
-           $http.get('/api/items')
-            .success(function (data) {
-              callback(data);
-        });
+        $http.get('/api/items')
+          .success(function (data) {
+            if(!data) {
+              $http.post('/api/items');
+            }
+            callback(data);
+          });
       };
+
 
       this.addCart = function(item){
           var cartSum = +CartItemService.get('cartSum');

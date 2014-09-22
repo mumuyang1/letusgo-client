@@ -1,23 +1,17 @@
 'use strict';
 
   angular.module('letusgoApp')
-    .service('productManageService', function (localStorageService) {
+    .service('productManageService', function (localStorageService,$http) {
 
 
-    this.deleteProductButton = function(name){
+      this.addProductButton = function(name){
+        $http.post('/api/items/'+name);
+      };
 
-      var allProducts = localStorageService.get('allProducts');
-      _.forEach(allProducts,function(product){
-        if(product.name === name){
 
-          allProducts = _.without(allProducts,product);
-        }
-      });
-      localStorageService.set('allProducts',allProducts);
-      return allProducts;
+    this.deleteProductButton = function(id){
+      $http.delete('/api/items/'+id);
     };
-
-
 
 
     this.changeProduct = function(productToBeChange,newName,newPrice,newUnit,newCategory){

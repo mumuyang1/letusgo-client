@@ -4,9 +4,9 @@ angular.module('letusgoApp')
 .controller('CategoryManageCtrl', function ($scope,categoryManageService,CartItemService) {
 
     $scope.$emit('to-parent-productManageActive');
-    // $scope.categories = categoryManageService.buildCategoryData('categories');
 
-    categoryManageService.getCategory(function(data){
+
+    categoryManageService.getCategories(function(data){
 
       $scope.categories = data;
     });
@@ -29,7 +29,7 @@ angular.module('letusgoApp')
 
       $scope.clickAddCategory = false;
 
-      categoryManageService.getCategory(function(data){
+      categoryManageService.getCategories(function(data){
         $scope.categories = data;
       });
     };
@@ -52,7 +52,7 @@ angular.module('letusgoApp')
 
           categoryManageService.deleteCategoryButton(category.id);
 
-          categoryManageService.getCategory(function(data){
+          categoryManageService.getCategories(function(data){
 
             $scope.categories = data;
           });
@@ -85,7 +85,7 @@ angular.module('letusgoApp')
       $scope.categoryId = CartItemService.get('categoryToChange');
       categoryManageService.changeName($scope.categoryId,newName);
 
-      categoryManageService.getCategory(function(data){
+      categoryManageService.getCategories(function(data){
 
         $scope.categories = data;
       });
