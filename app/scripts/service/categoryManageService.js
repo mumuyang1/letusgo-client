@@ -31,15 +31,20 @@
         });
      };
 
-//      this.getCategoryById = function(id,callback){
-//        this.loadAllCategories(function(categories){
-//          var result = _.find(categories,function(category){
-//            return category.id+'' === ''+id;
-//          });
-//          callback(result);
-//        });
-//      };
+      this.getCategoryByName = function(name,callback){
+        console.log(name+'?????????');
 
+        this.getCategories(function(categories){
+
+          var data =  _.find(categories,function(category){
+
+            return category.name === name;
+
+          });
+          callback(data);
+
+        });
+      };
 
 
       this.addCategory = function(newCategoryName){

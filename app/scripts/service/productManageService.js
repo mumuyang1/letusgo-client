@@ -4,8 +4,16 @@
     .service('productManageService', function (localStorageService,$http) {
 
 
-      this.addProductButton = function(name){
-        $http.post('/api/items/'+name);
+      this.addProductButton = function(name,price,unit,categoryId){
+        console.log(name);
+        $http.post('/api/items/'+name,
+            {
+              name: name,
+              price: price,
+              unit: unit,
+              categoryId: categoryId
+            }
+          );
       };
 
 
@@ -14,20 +22,29 @@
     };
 
 
-    this.changeProduct = function(productToBeChange,newName,newPrice,newUnit,newCategory){
+    this.changeProduct = function(id,newName,newPrice,newUnit,newCategoryId){
 
-      var allProducts = localStorageService.get('allProducts');
+      $http.put('/api/items/'+id,
+          {
+            name: newName,
+            price: newPrice,
+            unit: newUnit,
+            categoryId: newCategoryId
+          }
+       );
 
-      _.forEach(allProducts,function(product){
-        if(product.name === productToBeChange){
-            product.name = newName;
-            product.price = newPrice;
-            product.unit = newUnit;
-            product.category = newCategory;
-            localStorageService.set('allProducts',allProducts);
-        }
-      });
-      return allProducts;
+//      var allProducts = localStorageService.get('allProducts');
+//
+//      _.forEach(allProducts,function(product){
+//        if(product.name === productToBeChange){
+//            product.name = newName;
+//            product.price = newPrice;
+//            product.unit = newUnit;
+//            product.category = newCategory;
+//            localStorageService.set('allProducts',allProducts);
+//        }
+//      });
+//      return allProducts;
   };
 
 

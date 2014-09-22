@@ -10,9 +10,6 @@ angular.module('letusgoApp')
           _.forEach(data,function(item){
 
              categoryManageService.getCategoryById(item.categoryId ,function(category){
-               console.log(category+'??');
-
-
                item.category = category;
                $scope.items = data;
             });
