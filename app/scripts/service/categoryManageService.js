@@ -31,7 +31,6 @@
      };
 
       this.getCategoryByName = function(name,callback){
-        console.log(name+'?????????');
 
         this.getCategories(function(categories){
 
