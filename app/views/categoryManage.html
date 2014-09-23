@@ -3,9 +3,8 @@
    </div>
    <div class="panel-body">
      <div class="panel-body text-center" ng-show="clickDelete">
-       <label>该类别下有商品，确定删除该分类以及分类下所有商品？</label>
-       <button ng-click="finishDelete(item.name)" type="button" class="btn btn-danger btn-sm">删除</button>
-       <button ng-click="cancelDelete()" type="button" class="btn btn-sm btn-info">取消</button>
+       <label class="text-danger">该类别下有商品，不能删除！！</label>
+       <button ng-click="cancelDelete()" type="button" class="btn btn-sm btn-info">取消删除</button>
      </div>
    </div>
 </div>

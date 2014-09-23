@@ -60,13 +60,10 @@
 
       };
 
-
       this.deleteCategoryButton = function(id){
 
           $http.delete('/api/categories/'+id);
       };
-
-
 
       this.changeName = function(id,newName){
 

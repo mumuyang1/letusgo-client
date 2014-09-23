@@ -15,6 +15,7 @@ angular.module('letusgoApp')
 
     refresh();
 
+
     $scope.clickAddCategory = false;
     $scope.clickChangeCategory = false;
     $scope.clickDelete = false;
@@ -47,7 +48,7 @@ angular.module('letusgoApp')
       categoryManageService.hasProductsInTheCategory(category.id,function(data){
         if(data){
           $scope.clickDelete = true;
-          CartItemService.set('categoryToDelete',category.id);
+
         }else{
 
           categoryManageService.deleteCategoryButton(category.id);
@@ -55,14 +56,6 @@ angular.module('letusgoApp')
         }
       });
     };
-
-    $scope.finishDelete = function(){
-      var categoryToDelete = CartItemService.get('categoryToDelete');
-      categoryManageService.deleteCategoryButton(categoryToDelete);
-      refresh();
-      $scope.clickDelete = false;
-    };
-
 
     $scope.cancelDelete = function(){
       $scope.clickDelete = false;
