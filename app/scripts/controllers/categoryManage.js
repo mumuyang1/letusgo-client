@@ -7,14 +7,13 @@ angular.module('letusgoApp')
 
 
     function refresh(){
-
         categoryManageService.getCategories(function(data){
          $scope.categories = data;
+          console.log(data+"----");
         });
     }
 
     refresh();
-
 
     $scope.clickAddCategory = false;
     $scope.clickChangeCategory = false;
@@ -30,10 +29,10 @@ angular.module('letusgoApp')
 
       if(newCategoryName){
         categoryManageService.addCategory(newCategoryName);
+        refresh();
       }
-
       $scope.clickAddCategory = false;
-      refresh();
+
     };
 
 

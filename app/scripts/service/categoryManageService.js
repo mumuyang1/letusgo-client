@@ -6,12 +6,11 @@
       this.getCategories = function(callback){
           $http.get('/api/categories')
             .success(function (data) {
-
+//              console.log(data+'-----------');
               if(!data){
                 $http.post('/api/categories/');
               }
               callback(data);
-
             });
       };
 
@@ -46,7 +45,11 @@
 
       this.addCategory = function(newCategoryName){
 
-        $http.post('/api/categories/'+newCategoryName);
+        this.getCategories(function(categories){
+            var id = parseInt(categories[categories.length-1].id) + 1;
+            $http.post('/api/categories/'+id, { name : newCategoryName });
+        });
+
       };
 
 
