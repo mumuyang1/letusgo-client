@@ -6,10 +6,14 @@ angular.module('letusgoApp')
     $scope.$emit('to-parent-productManageActive');
 
 
-    categoryManageService.getCategories(function(data){
+    function refresh(){
 
-      $scope.categories = data;
-    });
+        categoryManageService.getCategories(function(data){
+         $scope.categories = data;
+        });
+    }
+
+    refresh();
 
     $scope.clickAddCategory = false;
     $scope.clickChangeCategory = false;
@@ -28,10 +32,7 @@ angular.module('letusgoApp')
       }
 
       $scope.clickAddCategory = false;
-
-      categoryManageService.getCategories(function(data){
-        $scope.categories = data;
-      });
+      refresh();
     };
 
 
@@ -43,20 +44,14 @@ angular.module('letusgoApp')
     $scope.deleteCategory = function(category){
 
 
-      categoryManageService.hasProductsInTheCategory(category.name,function(data){
-        console.log(data);
+      categoryManageService.hasProductsInTheCategory(category.id,function(data){
         if(data){
           $scope.clickDelete = true;
           CartItemService.set('categoryToDelete',category.id);
         }else{
 
           categoryManageService.deleteCategoryButton(category.id);
-
-          categoryManageService.getCategories(function(data){
-
-            $scope.categories = data;
-          });
-
+          refresh();
         }
       });
     };
@@ -64,7 +59,7 @@ angular.module('letusgoApp')
     $scope.finishDelete = function(){
       var categoryToDelete = CartItemService.get('categoryToDelete');
       categoryManageService.deleteCategoryButton(categoryToDelete);
-      $scope.categories = CartItemService.get('categories');
+      refresh();
       $scope.clickDelete = false;
     };
 
@@ -84,11 +79,7 @@ angular.module('letusgoApp')
       $scope.clickChangeCategory = false;
       $scope.categoryId = CartItemService.get('categoryToChange');
       categoryManageService.changeName($scope.categoryId,newName);
-
-      categoryManageService.getCategories(function(data){
-
-        $scope.categories = data;
-      });
+      refresh();
     };
 
 

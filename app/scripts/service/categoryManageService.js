@@ -50,11 +50,12 @@
       };
 
 
-      this.hasProductsInTheCategory = function(name,callback){
+      this.hasProductsInTheCategory = function(categoryId,callback){
 
           $http.get('api/items').success(function (products) {
+            console.log(categoryId+'???');
 
-            callback(_.any(products,{ category: name}));
+            callback(_.any(products,{ categoryId: categoryId}));
           });
 
       };
