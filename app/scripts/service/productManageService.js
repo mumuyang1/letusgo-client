@@ -1,20 +1,22 @@
 'use strict';
 
   angular.module('letusgoApp')
-    .service('productManageService', function (localStorageService,$http) {
+    .service('productManageService', function (ItemsService,$http) {
 
 
       this.addProductButton = function(name,price,unit,categoryId){
-        $http.post('/api/items/'+name,
+
+        ItemsService.getItems(function(data){
+          var id = data[data.length - 1].id + 1;
+          $http.post('/api/items/'+id,
             {
               name: name,
               price: price,
               unit: unit,
               categoryId: categoryId
-            }
-          );
+            });
+        });
       };
-
 
     this.deleteProductButton = function(id){
       $http.delete('/api/items/'+id);
