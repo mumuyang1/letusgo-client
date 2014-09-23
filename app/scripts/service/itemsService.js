@@ -7,7 +7,7 @@ angular.module('letusgoApp').service('ItemsService',function(CartItemService,$ht
         $http.get('/api/items')
           .success(function (data) {
 
-            if(!data) {
+            if(!data){
               $http.post('/api/items');
             }
             callback(data);

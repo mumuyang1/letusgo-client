@@ -1,7 +1,7 @@
 'use strict';
 
   angular.module('letusgoApp')
-    .service('categoryManageService', function (localStorageService,$http) {
+    .service('categoryManageService', function (ItemsService,$http) {
 
       this.getCategories = function(callback){
           $http.get('/api/categories')
@@ -10,7 +10,6 @@
               if(!data){
                 $http.post('/api/categories/');
               }
-
               callback(data);
 
             });
@@ -46,6 +45,7 @@
 
 
       this.addCategory = function(newCategoryName){
+
         $http.post('/api/categories/'+newCategoryName);
       };
 
@@ -69,7 +69,4 @@
 
         $http.put('/api/categories/'+id,{categoryName:newName});
       };
-
-
-
 });
