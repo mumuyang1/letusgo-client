@@ -43,11 +43,12 @@
       };
 
 
-      this.addCategory = function(newCategoryName){
+      this.addCategory = function(newCategoryName,callback){
 
         this.getCategories(function(categories){
             var id = parseInt(categories[categories.length-1].id) + 1;
             $http.post('/api/categories/'+id, { name : newCategoryName });
+          callback();
         });
 
       };
