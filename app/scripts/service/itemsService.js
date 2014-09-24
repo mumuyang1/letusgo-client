@@ -16,42 +16,43 @@ angular.module('letusgoApp').service('ItemsService',function(CartItemsService,$h
 
 
       this.addCart = function(item){
+
           var cartSum = +CartItemsService.get('cartSum');
           cartSum += 1;
-          CartItemService.set('cartSum',cartSum);
+          CartItemsService.set('cartSum',cartSum);
 
-          this.getCartProducts(item);
-
+          this.buildCartItems(item);
           return cartSum;
         };
 
 
-      this.getCartProducts = function(item){
-        var cartProduct = CartItemsService.get('cartProduct');
-        var cartItem = CartItemsService.getCartItems(item,1);
+      this.buildCartItems = function(item){
 
-        if(cartProduct === null){
-            cartProduct = [];
-            cartProduct.push(cartItem);
-        }
-        else{
-              if(!this.judgeIsExist(cartProduct,item)){
-                  cartProduct.push(cartItem);
+        var cartItem = {'item' : item, 'count' : 1};
+
+        $http.get('/api/cartItems')
+         .success(function (cartItems) {
+
+            if(!cartItems){
+                 cartItems= [];
+                cartItems.push(cartItem);
+            }else{
+              judgeIsExist(cartItems,item) ? cartItem.count++ : cartItems.push(cartItem);
             }
-        }
-        CartItemsService.set('cartProduct',cartProduct);
+
+            $http.post('/api/cartItems',{'cartItems' : cartItems});
+        });
       };
 
+      function judgeIsExist(cartItems,item){
 
-      this.judgeIsExist = function(cartProduct,item){
+        for(var i = 0; i < cartItems.length; i++){
 
-        for(var i = 0; i < cartProduct.length; i++){
-
-            if(item.name === cartProduct[i].items.name){
-              cartProduct[i].inputCount++;
-              return true;
-            }
+          if(item.id === cartItems[i].item.id){
+            return true;
+          }
         }
         return false;
-      };
+      }
+
 });

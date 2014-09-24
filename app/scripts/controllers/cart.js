@@ -1,16 +1,19 @@
 'use strict';
 
 angular.module('letusgoApp')
-    .controller('CartCtrl', function ($scope,CartItemService) {
+    .controller('CartCtrl', function ($scope,CartItemsService) {
 
         $scope.$emit('to-parent-cartActive');
-        $scope.cartsums = CartItemService.get('cartSum');
+        $scope.cartsums = CartItemsService.get('cartSum');
         updateTotalAndCart();
 
 
         function updateTotalAndCart(){
-             $scope.cartItems = CartItemService.get('cartProduct');
-             $scope.total = CartItemService.getTotal($scope.cartItems);
+
+             CartItemsService.getCartItems(function(data){
+               $scope.cartItems = data;
+             });
+             $scope.total = CartItemsService.getTotal($scope.cartItems);
         }
 
 

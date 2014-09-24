@@ -1,12 +1,29 @@
 'use strict';
 
   angular.module('letusgoApp')
-    .service('CartItemService', function (localStorageService) {
+    .service('CartItemsService', function (localStorageService,$http) {
 
-        this.getCartItems = function (items, inputCount) {
-            return {items: items, inputCount: inputCount};
-        };
+//        this.getCartItems = function (items, inputCount) {
+//            return {items: items, inputCount: inputCount};
+//        };
 
+//      this.getCartItems = function (callback) {
+//        $http.get('/api/cartItems')
+//          .success(function(data){
+//            callback(data);
+//        });
+//      };
+
+        this.getCartItems= function(callback){
+          $http.get('/api/cartItems')
+            .success(function (data) {
+
+              if(!data){
+                $http.post('/api/cartItems');
+              }
+              callback(data);
+            });
+          };
 
         this.add = function (cartItem, cartProduct) {
             var cartSums = 0;
