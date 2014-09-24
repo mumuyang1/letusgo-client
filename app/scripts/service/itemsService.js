@@ -36,8 +36,10 @@ angular.module('letusgoApp').service('ItemsService',function(CartItemsService,$h
             if(!cartItems){
                  cartItems= [];
                 cartItems.push(cartItem);
-            }else{
-              judgeIsExist(cartItems,item) ? cartItem.count++ : cartItems.push(cartItem);
+
+            } else {
+              var result = judgeIsExist(cartItems,item);
+              result ? result.count++ : cartItems.push(cartItem);
             }
 
             $http.post('/api/cartItems',{'cartItems' : cartItems});
@@ -49,10 +51,9 @@ angular.module('letusgoApp').service('ItemsService',function(CartItemsService,$h
         for(var i = 0; i < cartItems.length; i++){
 
           if(item.id === cartItems[i].item.id){
-            return true;
+            return cartItems[i];
           }
-        }
-        return false;
-      }
+         }
+      };
 
 });
