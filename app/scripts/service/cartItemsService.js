@@ -4,12 +4,10 @@
     .service('CartItemsService', function (localStorageService,$http) {
 
       this.getCartItems= function(callback){
+        
         $http.get('/api/cartItems')
           .success(function (data) {
 
-            if(!data){
-              $http.post('/api/cartItems');
-            }
             callback(data);
           });
         };
