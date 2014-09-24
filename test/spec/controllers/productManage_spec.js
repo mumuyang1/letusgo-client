@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: ProductManageCtrl', function () {
+xdescribe('Controller: ProductManageCtrl', function () {
 
   beforeEach(module('letusgoApp'));
 

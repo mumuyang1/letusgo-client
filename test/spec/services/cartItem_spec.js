@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Service: cartItemService', function () {
+xdescribe('Service: cartItemService', function () {
 
     var cartService,localStorageService,cartItem1,cartItem2,cartItem3,cartProduct,inputCount;
 

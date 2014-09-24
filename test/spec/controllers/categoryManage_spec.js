@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: CategoryManageCtrl', function () {
+xdescribe('Controller: CategoryManageCtrl', function () {
 
 
   beforeEach(module('letusgoApp'));

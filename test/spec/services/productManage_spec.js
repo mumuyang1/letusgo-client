@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Service: productManageService', function () {
+xdescribe('Service: productManageService', function () {
 
     var localStorageService,productManageService,allProducts,
         toChange,newName,newPrice,newUnit,newCategory;
