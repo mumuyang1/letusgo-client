@@ -3,42 +3,28 @@
   angular.module('letusgoApp')
     .service('CartItemsService', function (localStorageService,$http) {
 
-//        this.getCartItems = function (items, inputCount) {
-//            return {items: items, inputCount: inputCount};
-//        };
+      this.getCartItems= function(callback){
+        $http.get('/api/cartItems')
+          .success(function (data) {
 
-//      this.getCartItems = function (callback) {
-//        $http.get('/api/cartItems')
-//          .success(function(data){
-//            callback(data);
-//        });
-//      };
-
-        this.getCartItems= function(callback){
-          $http.get('/api/cartItems')
-            .success(function (data) {
-
-              if(!data){
-                $http.post('/api/cartItems');
-              }
-              callback(data);
-            });
-          };
-
-        this.add = function (cartItem, cartProduct) {
-            var cartSums = 0;
-            _.forEach(cartProduct, function (item) {
-
-                if (item.items.name === cartItem.name) {
-                    cartSums = +localStorageService.get('cartSum');
-                    item.inputCount += 1;
-                    cartSums += 1;
-                    localStorageService.set('cartSum',cartSums);
-                    localStorageService.set('cartProduct',cartProduct);
-                }
-            });
-            return cartSums;
+            if(!data){
+              $http.post('/api/cartItems');
+            }
+            callback(data);
+          });
         };
+
+
+      this.add = function (cartItem) {
+
+        var cartSums = +localStorageService.get('cartSum');
+        cartSums += 1;
+        localStorageService.set('cartSum',cartSums);
+
+        $http.post('/api/cartItems/'+cartItem.id);
+
+        return cartSums;
+      };
 
 
         this.reduce = function(cartItem,cartProduct){
@@ -79,11 +65,6 @@
           });
             return cartSums;
         };
-
-//      this.getSubtotal = function (cartItem) {
-//        var subtotal = cartItem.item.price * cartItem.count;
-//        return subtotal.toFixed(2);
-//      };
 
         this.getTotal = function (cartItems) {
             var total = 0;

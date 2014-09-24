@@ -13,10 +13,14 @@ angular.module('letusgoApp')
         $scope.cartsums = ItemsService.addCart(item);
       };
 
-      $scope.$on('to-parent-add',function(add,cartItems,cartProduct){
-          $scope.cartsums = CartItemsService.add(cartItems,cartProduct);
-      });
+//      $scope.$on('to-parent-add',function(add,cartItems,cartProduct){
+//          $scope.cartsums = CartItemsService.add(cartItems,cartProduct);
+//      });
+//
 
+    $scope.$on('to-parent-add',function(add,cartItems){
+      $scope.cartsums = CartItemsService.add(cartItems);
+    });
 
       $scope.$on('to-parent-reduce',function(reduce,cartItems,cartProduct){
           $scope.cartsums = CartItemsService.reduce(cartItems,cartProduct);

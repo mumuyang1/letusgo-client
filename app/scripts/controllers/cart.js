@@ -7,7 +7,6 @@ angular.module('letusgoApp')
         $scope.cartsums = CartItemsService.get('cartSum');
         updateTotalAndCart();
 
-
         function updateTotalAndCart(){
 
              CartItemsService.getCartItems(function(data){
@@ -17,7 +16,6 @@ angular.module('letusgoApp')
                  var subtotal = cartItem.item.price * cartItem.count;
                  return subtotal.toFixed(2);
                };
-
                $scope.total = CartItemsService.getTotal($scope.cartItems);
              });
         }
