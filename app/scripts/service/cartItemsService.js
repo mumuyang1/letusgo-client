@@ -80,12 +80,12 @@
             return cartSums;
         };
 
-        this.getTotal = function (cartProduct) {
+        this.getTotal = function (cartItems) {
             var total = 0;
-            _.forEach(cartProduct, function (item) {
-                total += item.items.price * item.inputCount;
+            _.forEach(cartItems, function (cartItem) {
+                total += cartItem.item.price * cartItem.count;
             });
-            return total;
+            return total.toFixed(2);
         };
 
 
