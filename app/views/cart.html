@@ -20,7 +20,7 @@
           <button ng-click="reduceButton(cartItem.item)">-</button></div>
         <div class="col-md-2 form-group"><button ng-click="deleteButton(cartItem.item)">移除</button></div>
         <div class="col-md-1">
-          {{cartItem.item.price * cartItem.count}}
+          {{getSubtotal(cartItem)}}
         </div>
       </div>
     </div>

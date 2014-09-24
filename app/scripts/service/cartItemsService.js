@@ -80,6 +80,11 @@
             return cartSums;
         };
 
+//      this.getSubtotal = function (cartItem) {
+//        var subtotal = cartItem.item.price * cartItem.count;
+//        return subtotal.toFixed(2);
+//      };
+
         this.getTotal = function (cartItems) {
             var total = 0;
             _.forEach(cartItems, function (cartItem) {

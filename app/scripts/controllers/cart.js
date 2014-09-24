@@ -12,9 +12,14 @@ angular.module('letusgoApp')
 
              CartItemsService.getCartItems(function(data){
                $scope.cartItems = data;
+
+               $scope.getSubtotal = function(cartItem){
+                 var subtotal = cartItem.item.price * cartItem.count;
+                 return subtotal.toFixed(2);
+               };
+
                $scope.total = CartItemsService.getTotal($scope.cartItems);
              });
-
         }
 
 
