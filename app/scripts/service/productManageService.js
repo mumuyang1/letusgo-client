@@ -4,7 +4,7 @@
     .service('productManageService', function (ItemsService,$http) {
 
 
-      this.addProductButton = function(name,price,unit,categoryId){
+      this.addProductButton = function(name,price,unit,categoryId,callback){
 
         ItemsService.getItems(function(data){
           var id = data[data.length - 1].id + 1;
@@ -15,6 +15,7 @@
               unit: unit,
               categoryId: categoryId
             });
+          callback();
         });
       };
 

@@ -38,8 +38,9 @@ angular.module('letusgoApp')
         categoryManageService. getCategoryByName(categoryName,function(data){
 
           var categoryId = data.id;
-          productManageService.addProductButton(name,price,unit,categoryId);
-          refresh();
+          productManageService.addProductButton(name,price,unit,categoryId, function(){
+            refresh();
+          });
         });
       };
 
