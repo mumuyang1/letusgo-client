@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('letusgoApp')
-    .controller('ShoppingMallCtrl', function ($scope,CartItemService,ItemsService, categoryManageService) {
+    .controller('ShoppingMallCtrl', function ($scope,ItemsService, categoryManageService) {
 
         $scope.$emit('to-parent-shoppingMallActive');
 

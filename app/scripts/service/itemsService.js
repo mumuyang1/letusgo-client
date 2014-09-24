@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('letusgoApp').service('ItemsService',function(CartItemService,$http){
+angular.module('letusgoApp').service('ItemsService',function(CartItemsService,$http){
 
       this.getItems = function(callback){
 
@@ -16,7 +16,7 @@ angular.module('letusgoApp').service('ItemsService',function(CartItemService,$ht
 
 
       this.addCart = function(item){
-          var cartSum = +CartItemService.get('cartSum');
+          var cartSum = +CartItemsService.get('cartSum');
           cartSum += 1;
           CartItemService.set('cartSum',cartSum);
 
@@ -27,8 +27,8 @@ angular.module('letusgoApp').service('ItemsService',function(CartItemService,$ht
 
 
       this.getCartProducts = function(item){
-        var cartProduct = CartItemService.get('cartProduct');
-        var cartItem = CartItemService.getCartItems(item,1);
+        var cartProduct = CartItemsService.get('cartProduct');
+        var cartItem = CartItemsService.getCartItems(item,1);
 
         if(cartProduct === null){
             cartProduct = [];
@@ -39,7 +39,7 @@ angular.module('letusgoApp').service('ItemsService',function(CartItemService,$ht
                   cartProduct.push(cartItem);
             }
         }
-        CartItemService.set('cartProduct',cartProduct);
+        CartItemsService.set('cartProduct',cartProduct);
       };
 
 

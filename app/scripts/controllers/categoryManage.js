@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('letusgoApp')
-.controller('CategoryManageCtrl', function ($scope,categoryManageService,CartItemService) {
+.controller('CategoryManageCtrl', function ($scope,categoryManageService,CartItemsService) {
 
     $scope.$emit('to-parent-productManageActive');
 
@@ -63,13 +63,13 @@ angular.module('letusgoApp')
     $scope.changeCategory = function(category){
       $scope.newName = category.name;
       $scope.clickChangeCategory = true;
-      CartItemService.set('categoryToChange',category.id);
+      CartItemsService.set('categoryToChange',category.id);
     };
 
 
     $scope.finishChangeCategory = function(newName){
       $scope.clickChangeCategory = false;
-      $scope.categoryId = CartItemService.get('categoryToChange');
+      $scope.categoryId = CartItemsService.get('categoryToChange');
       categoryManageService.changeName($scope.categoryId,newName);
       refresh();
     };
