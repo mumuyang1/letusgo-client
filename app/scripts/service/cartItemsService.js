@@ -58,7 +58,6 @@
               cartSums  = cartSums - cartItem.count;
               localStorageService.set('cartSum',cartSums);
               $http.put('/api/cartItems/'+item.id,{'operation' : 'delete'});
-
             }
           });
         });
@@ -73,12 +72,12 @@
         };
 
 
-        this.pay = function(cartProduct){
-            cartProduct = [];
-            localStorageService.set('cartProduct',cartProduct);
-            localStorageService.set('cartSum',0);
-            return cartSums;
+        this.pay = function(){
 
+            $http.delete('/api/cartItems/');
+            var cartSums = 0;
+            localStorageService.set('cartSum',cartSums);
+            return cartSums;
         };
 
 
