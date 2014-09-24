@@ -13,24 +13,23 @@ angular.module('letusgoApp')
         $scope.cartsums = ItemsService.addCart(item);
       };
 
-//      $scope.$on('to-parent-add',function(add,cartItems,cartProduct){
-//          $scope.cartsums = CartItemsService.add(cartItems,cartProduct);
-//      });
-//
 
-    $scope.$on('to-parent-add',function(add,cartItems){
-      $scope.cartsums = CartItemsService.add(cartItems);
-    });
+       $scope.$on('to-parent-add',function(add, item){
+          $scope.cartsums = CartItemsService.add(item);
+        });
 
-      $scope.$on('to-parent-reduce',function(reduce,cartItems,cartProduct){
-          $scope.cartsums = CartItemsService.reduce(cartItems,cartProduct);
+
+      $scope.$on('to-parent-reduce',function(reduce,cartItem){
+        CartItemsService.reduce(cartItem);
+        $scope.cartsums = CartItemsService.get('cartSum');
       });
 
 
-      $scope.$on('to-parent-delete',function(event,cartItems,cartProduct){
-          $scope.cartsums = CartItemsService.delete(cartItems,cartProduct);
-      });
+      $scope.$on('to-parent-delete',function(event,cartItem){
 
+        CartItemsService.delete(cartItem);
+        $scope.cartsums = CartItemsService.get('cartSum');
+      });
 
       $scope.$on('to-parent-pay',function(pay,cartItems,cartProduct){
           $scope.cartsums = CartItemsService.pay(cartItems,cartProduct);

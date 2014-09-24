@@ -15,56 +15,54 @@
         };
 
 
-      this.add = function (cartItem) {
+      this.add = function (item) {
 
         var cartSums = +localStorageService.get('cartSum');
         cartSums += 1;
         localStorageService.set('cartSum',cartSums);
 
-        $http.post('/api/cartItems/'+cartItem.id);
-
+        $http.put('/api/cartItems/'+item.id,{'operation' : 'add'});
         return cartSums;
       };
 
 
-        this.reduce = function(cartItem,cartProduct){
-            var cartSums = 0;
-            _.forEach(cartProduct, function (item) {
+      this.reduce = function(item){
+        this.getCartItems(function(cartItems){
 
-                if (item.items.name === cartItem.name) {
-                    if(item.inputCount <= 1){
-                        item.inputCount = 1;
-                        cartSums = localStorageService.get('cartSum');
-                    }
-                    else{
-                          cartSums = localStorageService.get('cartSum');
-                          item.inputCount -= 1;
-                          cartSums -= 1;
+          _.forEach(cartItems, function (cartItem) {
 
-                          localStorageService.set('cartSum', cartSums);
-                          localStorageService.set('cartProduct', cartProduct);
-                    }
+            if (cartItem.item.id === item.id) {
+
+                if(cartItem.count > 1){
+
+                    var  cartSums = localStorageService.get('cartSum');
+                    cartSums -= 1;
+
+                    localStorageService.set('cartSum', cartSums);
+                    $http.put('/api/cartItems/'+item.id,{'operation' : 'reduce'});
+                   }
                 }
             });
-            return cartSums;
-        };
+         });
+      };
 
 
-        this.delete = function(cartItem,cartProduct){
+      this.delete = function(item){
 
-          var cartSums = localStorageService.get('cartSum');
+        var cartSums = localStorageService.get('cartSum');
 
-          _.forEach(cartProduct,function(cart){
-            if(cart.items.name === cartItem.name){
+        this.getCartItems(function(cartItems){
+           _.forEach(cartItems,function(cartItem){
+            if(cartItem.item.name === item.name){
 
-              cartSums  = cartSums - cart.inputCount;
-              cartProduct = _.without(cartProduct,cart);
-              localStorageService.set('cartProduct',cartProduct);
+              cartSums  = cartSums - cartItem.count;
               localStorageService.set('cartSum',cartSums);
+              $http.put('/api/cartItems/'+item.id,{'operation' : 'delete'});
+
             }
           });
-            return cartSums;
-        };
+        });
+      };
 
         this.getTotal = function (cartItems) {
             var total = 0;
@@ -78,8 +76,7 @@
         this.pay = function(cartProduct){
             cartProduct = [];
             localStorageService.set('cartProduct',cartProduct);
-            var cartSums = 0;
-            localStorageService.set('cartSum',cartSums);
+            localStorageService.set('cartSum',0);
             return cartSums;
 
         };

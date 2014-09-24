@@ -21,9 +21,9 @@ angular.module('letusgoApp')
         }
 
 
-        $scope.addButton = function (cartItems){
+        $scope.addButton = function (item){
 
-            $scope.$emit('to-parent-add',cartItems,$scope.cartItems);
+            $scope.$emit('to-parent-add',item);
             updateTotalAndCart();
         };
 
