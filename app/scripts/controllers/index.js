@@ -32,7 +32,7 @@ angular.module('letusgoApp')
 
       CartItemsService.getCartItems(function(data) {
 
-        $scope.cartsums = CartItemsService.delete(data, cartItem);
+        $scope.cartsums = CartItemsService.updateCartSumsWhenDelete(data, cartItem);
       });
      });
 

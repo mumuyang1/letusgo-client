@@ -46,7 +46,7 @@
         $http.put('/api/cartItems/'+item.id,{'operation' : 'reduce'});
       };
 
-      this.delete = function(cartItems,item){
+      this.updateCartSumsWhenDelete = function(cartItems,item){
 
         var cartSums = localStorageService.get('cartSum');
 
