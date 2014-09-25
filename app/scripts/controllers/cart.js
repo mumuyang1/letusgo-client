@@ -28,9 +28,11 @@ angular.module('letusgoApp')
         };
 
 
-        $scope.reduceButton = function (cartItems) {
+        $scope.reduceButton = function (item) {
 
-            $scope.$emit('to-parent-reduce',cartItems,$scope.cartItems);
+
+            CartItemsService.reduceCartItem(item);
+            $scope.$emit('to-parent-reduce',item);
             updateTotalAndCart();
         };
 

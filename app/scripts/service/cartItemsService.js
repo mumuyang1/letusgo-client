@@ -23,27 +23,28 @@
         return cartSums;
       };
 
+      this.judgeCount = function(cartItems,item){
 
-      this.reduce = function(item){
-        this.getCartItems(function(cartItems){
+       var cartSums = localStorageService.get('cartSum');
 
-          _.forEach(cartItems, function (cartItem) {
+        _.forEach(cartItems, function (cartItem) {
 
-            if (cartItem.item.id === item.id) {
+          if (cartItem.item.id === item.id) {
 
-                if(cartItem.count > 1){
+            if(cartItem.count > 1){
 
-                    var  cartSums = localStorageService.get('cartSum');
-                    cartSums -= 1;
-
-                    localStorageService.set('cartSum', cartSums);
-                    $http.put('/api/cartItems/'+item.id,{'operation' : 'reduce'});
-                   }
-                }
-            });
-         });
+              cartSums -= 1;
+              localStorageService.set('cartSum', cartSums);
+            }
+          }
+        });
+        return localStorageService.get('cartSum');
       };
 
+      this.reduceCartItem = function(item){
+
+        $http.put('/api/cartItems/'+item.id,{'operation' : 'reduce'});
+      };
 
       this.delete = function(item){
 

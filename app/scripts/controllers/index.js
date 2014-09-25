@@ -15,13 +15,17 @@ angular.module('letusgoApp')
 
 
        $scope.$on('to-parent-add',function(add, item){
+
           $scope.cartsums = CartItemsService.add(item);
         });
 
 
       $scope.$on('to-parent-reduce',function(reduce,cartItem){
-        CartItemsService.reduce(cartItem);
-        $scope.cartsums = CartItemsService.get('cartSum');
+
+        CartItemsService.getCartItems(function(data) {
+
+          $scope.cartsums = CartItemsService.judgeCount(data, cartItem)
+        });
       });
 
 
