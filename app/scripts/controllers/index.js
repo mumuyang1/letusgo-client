@@ -24,7 +24,7 @@ angular.module('letusgoApp')
 
         CartItemsService.getCartItems(function(data) {
 
-          $scope.cartsums = CartItemsService.judgeCount(data, cartItem)
+          $scope.cartsums = CartItemsService.updateCartSumsWhenReduce(data, cartItem)
         });
       });
 

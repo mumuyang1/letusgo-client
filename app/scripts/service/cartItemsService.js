@@ -23,7 +23,7 @@
         return cartSums;
       };
 
-      this.judgeCount = function(cartItems,item){
+      this.updateCartSumsWhenReduce = function(cartItems,item){
 
        var cartSums = localStorageService.get('cartSum');
 
@@ -53,7 +53,6 @@
            _.forEach(cartItems,function(cartItem){
 
             if(cartItem.item.name === item.name){
-              console.log('??');
 
               cartSums  = cartSums - cartItem.count;
               localStorageService.set('cartSum',cartSums);
