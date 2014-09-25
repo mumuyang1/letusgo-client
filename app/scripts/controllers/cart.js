@@ -36,9 +36,11 @@ angular.module('letusgoApp')
             updateTotalAndCart();
         };
 
+        $scope.deleteButton = function (item) {
 
-        $scope.deleteButton = function (cartItems) {
-            $scope.$emit('to-parent-delete',cartItems,$scope.cartItems);
+
+            $scope.$emit('to-parent-delete',item);
+            CartItemsService.deleteCartItem(item);
             updateTotalAndCart();
         };
 

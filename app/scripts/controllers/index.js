@@ -28,12 +28,13 @@ angular.module('letusgoApp')
         });
       });
 
+    $scope.$on('to-parent-delete',function(event,cartItem){
 
-      $scope.$on('to-parent-delete',function(event,cartItem){
+      CartItemsService.getCartItems(function(data) {
 
-        CartItemsService.delete(cartItem);
-        $scope.cartsums = CartItemsService.get('cartSum');
+        $scope.cartsums = CartItemsService.delete(data, cartItem);
       });
+     });
 
       $scope.$on('to-parent-pay',function(pay,cartItems,cartProduct){
           $scope.cartsums = CartItemsService.pay(cartItems,cartProduct);

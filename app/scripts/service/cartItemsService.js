@@ -46,20 +46,26 @@
         $http.put('/api/cartItems/'+item.id,{'operation' : 'reduce'});
       };
 
-      this.delete = function(item){
+      this.delete = function(cartItems,item){
 
         var cartSums = localStorageService.get('cartSum');
 
-        this.getCartItems(function(cartItems){
            _.forEach(cartItems,function(cartItem){
+
             if(cartItem.item.name === item.name){
+              console.log('??');
 
               cartSums  = cartSums - cartItem.count;
               localStorageService.set('cartSum',cartSums);
-              $http.put('/api/cartItems/'+item.id,{'operation' : 'delete'});
             }
           });
-        });
+
+        return localStorageService.get('cartSum');
+      };
+
+      this.deleteCartItem = function(item){
+
+        $http.put('/api/cartItems/'+item.id,{'operation' : 'delete'});
       };
 
         this.getTotal = function (cartItems) {
