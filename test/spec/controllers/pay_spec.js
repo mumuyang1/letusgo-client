@@ -1,6 +1,6 @@
 'use strict';
 
-xdescribe('Controller: PayCtrl', function () {
+describe('Controller: PayCtrl', function () {
 
 
   beforeEach(module('letusgoApp'));
@@ -11,7 +11,7 @@ xdescribe('Controller: PayCtrl', function () {
     scope = $injector.get('$rootScope').$new();
     $controller = $injector.get('$controller');
 
-    cartItemService = $injector.get('CartItemService');
+    cartItemService = $injector.get('CartItemsService');
 
     createController = function(){
 
@@ -37,11 +37,10 @@ xdescribe('Controller: PayCtrl', function () {
   it('should show is ok',function(){
 
       spyOn(scope,'$emit');
+      spyOn(cartItemService,'getCartItems');
       createController();
       expect(scope.$emit).toHaveBeenCalledWith('to-parent-cartActive');
-      expect(cartItemService.get).toHaveBeenCalled();
-      expect(scope.cartItems.length).toBe(1);
-      expect(scope.total).toBe(16);
+      expect(cartItemService.getCartItems).toHaveBeenCalled();
   });
 
   it('should payButton can do',function(){
@@ -49,9 +48,9 @@ xdescribe('Controller: PayCtrl', function () {
       createController();
       spyOn(scope,'$emit');
       scope.payButton(item);
-      expect(scope.$emit).toHaveBeenCalledWith('to-parent-pay',item,scope.cartItems);
-      expect(cartItemService.get.calls.count()).toBe(2);
-      expect(cartItemService.getTotal.calls.count()).toBe(2);
+      expect(scope.$emit).toHaveBeenCalledWith('to-parent-pay');
+      expect(scope.cartItems.length).toBe(0);
+      expect(cartItemService.getTotal.calls.count()).toBe(1);
   });
 
 });
