@@ -4,7 +4,6 @@ angular.module('letusgoApp')
     .controller('CartCtrl', function ($scope,CartItemsService) {
 
         $scope.$emit('to-parent-cartActive');
-        $scope.cartsums = CartItemsService.get('cartSum');
         updateTotalAndCart();
 
         function updateTotalAndCart(){
