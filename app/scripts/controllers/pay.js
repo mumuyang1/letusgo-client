@@ -10,8 +10,8 @@ angular.module('letusgoApp')
         $scope.total = CartItemsService.getTotal($scope.cartItems);
       });
 
-      $scope.payButton = function(cartItems){
-          $scope.$emit('to-parent-pay',cartItems,$scope.cartItems);
+      $scope.payButton = function(){
+          $scope.$emit('to-parent-pay');
           $scope.cartItems = [];
           $scope.total = CartItemsService.getTotal($scope.cartItems);
       };
