@@ -36,8 +36,8 @@ angular.module('letusgoApp')
       });
      });
 
-      $scope.$on('to-parent-pay',function(pay,cartItems,cartProduct){
-          $scope.cartsums = CartItemsService.pay(cartItems,cartProduct);
+      $scope.$on('to-parent-pay',function(){
+          $scope.cartsums = CartItemsService.pay();
       });
 
       $scope.$on('to-parent-mainActive', function () {
