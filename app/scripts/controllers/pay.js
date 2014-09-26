@@ -12,8 +12,7 @@ angular.module('letusgoApp')
 
       $scope.payButton = function(cartItems){
           $scope.$emit('to-parent-pay',cartItems,$scope.cartItems);
-          $scope.cartItems = CartItemsService.get('cartProduct');
+          $scope.cartItems = [];
           $scope.total = CartItemsService.getTotal($scope.cartItems);
       };
-
     });
