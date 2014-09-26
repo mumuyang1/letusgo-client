@@ -44,6 +44,12 @@ describe('Controller: CartSumsCtrl', function () {
     expect(temp ? parseInt(temp) : 0).toBe(0);
   });
 
+  it('should cartSum right when it is not null', function(){
+    createController();
+    spyOn(cartItemService,'get').and.returnValue(3);
+    var temp = cartItemService.get(cartSum);
+    expect(temp ? parseInt(temp) : 0).toBe(3);
+  });
 
   it('should addCartSum can do',function(){
     spyOn(itemsService,'addCart').and.returnValue(3);
