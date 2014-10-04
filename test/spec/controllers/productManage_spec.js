@@ -1,26 +1,26 @@
 'use strict';
 
-xdescribe('Controller: ProductManageCtrl', function () {
+describe('Controller: ProductManageCtrl', function () {
 
   beforeEach(module('letusgoApp'));
 
-  var $controller,productService,categoryService,scope,createController,
-      cartItemService,categories,newName,allProducts,product;
+  var $controller,categoryService,scope,createController,itemsService,
+    cartService,categories,newName,allProducts,product;
 
   beforeEach(inject(function ($injector) {
     scope = $injector.get('$rootScope').$new();
     $controller = $injector.get('$controller');
-
-    cartItemService = $injector.get('CartItemsService');
+    cartService = $injector.get('CartItemsService');
     categoryService = $injector.get('categoryManageService');
-    productService = $injector.get('productManageService');
+    itemsService = $injector.get('ItemsService');
 
     createController = function(){
 
       return $controller('ProductManageCtrl', {
           $scope: scope,
-          CartItemService: cartItemService,
-          categoryManageService: categoryService
+          CartItemsService: cartService,
+          categoryManageService: categoryService,
+          ItemsService : itemsService
       });
     };
 
@@ -33,13 +33,19 @@ xdescribe('Controller: ProductManageCtrl', function () {
       newName = '香蕉';
 
      allProducts = [
-                {barcode:'ITEM000001',category:'水果',name:'香蕉',price:'3.50',unit:'斤'},
-                {barcode:'ITEM000002',category:'水果',name:'菠萝',price:'4.00',unit:'个'},
-                {barcode:'ITEM000003',category:'饰品',name:'钻石项链',price:'160000.00',unit:'个'}
+                {id:1,barcode:'ITEM000001',category:'水果',name:'香蕉',price:'3.50',unit:'斤'},
+                {id:2,barcode:'ITEM000002',category:'水果',name:'菠萝',price:'4.00',unit:'个'},
+                {id:3,barcode:'ITEM000003',category:'饰品',name:'钻石项链',price:'160000.00',unit:'个'}
               ];
       product = {barcode:'ITEM000001',category:'水果',name:'香蕉',price:'3.50',unit:'斤'};
 
-      spyOn(cartItemService,'set');
+      spyOn(cartService,'set');
+      spyOn(itemsService,'getItems').and.callFake(function(callback){
+        callback(allProducts);
+      });
+//     spyOn(categoryService,'getCategoryById').and.callFake(function(callback){
+//      callback(categories[0]);
+//     });
 
   }));
 
@@ -47,7 +53,6 @@ xdescribe('Controller: ProductManageCtrl', function () {
   it('should highlight ok',function(){
       spyOn(scope,'$emit');
       createController();
-      expect(scope.$emit).toHaveBeenCalledWith('to-parent-productManageActive');
   });
 
 
@@ -57,6 +62,9 @@ xdescribe('Controller: ProductManageCtrl', function () {
       expect(scope.controlLayout).toBe(true);
       expect(scope.clickAddProduct).toBe(false);
       expect(scope.clickChangeProduct).toBe(false);
+      expect(scope.clickChangeProduct).toBe(false);
+      expect(itemsService.getItems).toHaveBeenCalled();
+//      expect(categoryService.getCategoryById).toHaveBeenCalled();
   });
 
 
@@ -88,12 +96,12 @@ xdescribe('Controller: ProductManageCtrl', function () {
 
 
   it('should delete product can do',function(){
-      spyOn(productService,'deleteProductButton');
+      spyOn(itemsService,'deleteProductButton');
 
       createController();
       scope.deleteProduct();
 
-      expect(productService.deleteProductButton.calls.count()).toBe(1);
+      expect(itemsService.deleteProductButton.calls.count()).toBe(1);
   });
 
   it('should change product view can show',function(){
@@ -105,15 +113,15 @@ xdescribe('Controller: ProductManageCtrl', function () {
   });
 
   it('should finish change category can do',function(){
-      spyOn(cartItemService,'get');
-      spyOn(productService,'changeProduct');
+      spyOn(cartService,'get');
+      spyOn(itemsService,'changeProduct');
 
       createController();
       scope.finishChangeProduct();
 
       expect(scope.clickChangeProduct).toBe(false);
       expect(scope.controlLayout).toBe(true);
-      expect(cartItemService.get.calls.count()).toBe(1);
+      expect(cartService.get.calls.count()).toBe(1);
   });
 
   it('should change product can cancel',function(){
