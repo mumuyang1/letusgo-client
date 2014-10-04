@@ -3,16 +3,20 @@
 angular.module('letusgoApp')
     .controller('PayCtrl', function ($scope,CartItemsService) {
 
-      $scope.$emit('to-parent-cartActive');
-
+    function updateCartData() {
       CartItemsService.getCartItems(function(data){
         $scope.cartItems = data;
         $scope.total = CartItemsService.getTotal($scope.cartItems);
       });
+    }
 
-      $scope.payButton = function(){
-          $scope.$emit('to-parent-pay');
-          $scope.cartItems = [];
-          $scope.total = CartItemsService.getTotal($scope.cartItems);
-      };
-    });
+    $scope.$emit('to-parent-cartActive');
+    updateCartData();
+
+    $scope.payButton = function(){
+
+      $scope.$emit('to-parent-pay');
+      updateCartData();
+    };
+
+  });
