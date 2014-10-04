@@ -28,48 +28,48 @@ angular.module('letusgoApp')
         });
       });
 
+    
     $scope.$on('to-parent-delete',function(event,cartItem){
 
       CartItemsService.getCartItems(function(data) {
-
         $scope.cartsums = CartItemsService.updateCartSumsWhenDelete(data, cartItem);
       });
      });
 
 
+    function highlight(main,shoppingmall,cart,productManage) {
+      $scope.mainActive = main;
+      $scope.shoppingMallActive = shoppingmall;
+      $scope.cartActive = cart;
+      $scope.productManageActive = productManage;
+    }
+
+
     $scope.$on('to-parent-pay',function(){
+
       CartItemsService.pay(function(){
         $scope.cartsums = CartItemsService.get('cartSum');
       });
-
     });
+
 
     $scope.$on('to-parent-mainActive', function () {
-        $scope.mainActive = true;
-        $scope.shoppingMallActive = false;
-        $scope.cartActive = false;
-        $scope.productManageActive = false;
+      highlight(true,false,false,false);
     });
+
 
     $scope.$on('to-parent-shoppingMallActive', function () {
-        $scope.mainActive = false;
-        $scope.shoppingMallActive = true;
-        $scope.cartActive = false;
-        $scope.productManageActive = false;
+      highlight(false,true,false,false);
     });
+
 
     $scope.$on('to-parent-cartActive', function () {
-        $scope.mainActive = false;
-        $scope.shoppingMallActive = false;
-        $scope.cartActive = true;
-        $scope.productManageActive = false;
+      highlight(false,false,true,false);
     });
+
 
     $scope.$on('to-parent-productManageActive', function () {
-        $scope.mainActive = false;
-        $scope.shoppingMallActive = false;
-        $scope.cartActive = false;
-        $scope.productManageActive = true;
+      highlight(false,false,false,true);
     });
 
-    });
+   });
