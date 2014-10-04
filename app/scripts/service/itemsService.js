@@ -2,8 +2,7 @@
 
 angular.module('letusgoApp').service('ItemsService',function(CartItemsService,$http){
 
-      this.getItems = function(callback){
-
+      function getItems(callback) {
         $http.get('/api/items')
           .success(function (data) {
 
@@ -12,6 +11,13 @@ angular.module('letusgoApp').service('ItemsService',function(CartItemsService,$h
             }
             callback(data);
           });
+      }
+
+      this.getAllItems = function(callback){
+
+        getItems(function(data){
+          callback(data);
+        });
       };
 
 
@@ -24,5 +30,6 @@ angular.module('letusgoApp').service('ItemsService',function(CartItemsService,$h
           $http.post('/api/cartItems',{'item' : item});
           return cartSum;
         };
+
 
 });

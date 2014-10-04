@@ -5,7 +5,7 @@ angular.module('letusgoApp')
 
         $scope.$emit('to-parent-shoppingMallActive');
 
-        ItemsService.getItems(function(data){
+        ItemsService.getAllItems(function(data){
 
           _.forEach(data,function(item){
 
