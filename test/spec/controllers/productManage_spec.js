@@ -5,7 +5,7 @@ describe('Controller: ProductManageCtrl', function () {
   beforeEach(module('letusgoApp'));
 
   var $controller,categoryService,scope,createController,itemsService,
-    cartService,categories,newName,allProducts,product;
+    cartService,categories,newName,allProducts,product,id;
 
   beforeEach(inject(function ($injector) {
     scope = $injector.get('$rootScope').$new();
@@ -30,7 +30,7 @@ describe('Controller: ProductManageCtrl', function () {
         ];
 
 
-      newName = '香蕉';
+      newName = '苹果';
 
      allProducts = [
                 {id:1,barcode:'ITEM000001',category:'水果',name:'香蕉',price:'3.50',unit:'斤'},
@@ -39,13 +39,21 @@ describe('Controller: ProductManageCtrl', function () {
               ];
       product = {barcode:'ITEM000001',category:'水果',name:'香蕉',price:'3.50',unit:'斤'};
 
+      id = 1;
+
       spyOn(cartService,'set');
       spyOn(itemsService,'getItems').and.callFake(function(callback){
         callback(allProducts);
       });
-//     spyOn(categoryService,'getCategoryById').and.callFake(function(callback){
-//      callback(categories[0]);
-//     });
+      spyOn(categoryService,'getCategoryById').and.callFake(function(id,callback){
+        callback(categories[0]);
+      });
+      spyOn(categoryService,'getCategoryByName').and.callFake(function(id,callback){
+        callback(categories[0]);
+      });
+      spyOn(categoryService,'getCategories').and.callFake(function(callback){
+        callback(categories);
+      });
 
   }));
 
@@ -64,16 +72,18 @@ describe('Controller: ProductManageCtrl', function () {
       expect(scope.clickChangeProduct).toBe(false);
       expect(scope.clickChangeProduct).toBe(false);
       expect(itemsService.getItems).toHaveBeenCalled();
-//      expect(categoryService.getCategoryById).toHaveBeenCalled();
+      expect(categoryService.getCategoryById).toHaveBeenCalled();
   });
 
 
   it('should add product view can show',function(){
+
       createController();
       scope.addProduct();
 
       expect(scope.controlLayout).toBe(false);
       expect(scope.clickAddProduct).toBe(true);
+      expect(categoryService.getCategories).toHaveBeenCalled();
   });
 
 
@@ -83,6 +93,8 @@ describe('Controller: ProductManageCtrl', function () {
 
       expect(scope.clickAddProduct).toBe(false);
       expect(scope.controlLayout).toBe(true);
+      expect(itemsService.getItems).toHaveBeenCalled();
+      expect(categoryService.getCategoryById).toHaveBeenCalled();
   });
 
 
@@ -106,10 +118,13 @@ describe('Controller: ProductManageCtrl', function () {
 
   it('should change product view can show',function(){
       createController();
-      scope.changeProduct(newName);
+      scope.changeProduct(product);
 
       expect(scope.clickChangeProduct).toBe(true);
       expect(scope.controlLayout).toBe(false);
+      expect(categoryService.getCategories).toHaveBeenCalled();
+      expect(categoryService.getCategoryById).toHaveBeenCalled();
+      expect(cartService.set).toHaveBeenCalled();
   });
 
   it('should finish change category can do',function(){
@@ -122,6 +137,10 @@ describe('Controller: ProductManageCtrl', function () {
       expect(scope.clickChangeProduct).toBe(false);
       expect(scope.controlLayout).toBe(true);
       expect(cartService.get.calls.count()).toBe(1);
+      expect(categoryService.getCategoryByName).toHaveBeenCalled();
+      expect(itemsService.changeProduct).toHaveBeenCalled();
+      expect(itemsService.getItems).toHaveBeenCalled();
+      expect(categoryService.getCategoryById).toHaveBeenCalled();
   });
 
   it('should change product can cancel',function(){
