@@ -36,36 +36,40 @@ angular.module('letusgoApp')
       });
      });
 
-      $scope.$on('to-parent-pay',function(){
-          $scope.cartsums = CartItemsService.pay();
+
+    $scope.$on('to-parent-pay',function(){
+      CartItemsService.pay(function(){
+        $scope.cartsums = CartItemsService.get('cartSum');
       });
 
-      $scope.$on('to-parent-mainActive', function () {
-          $scope.mainActive = true;
-          $scope.shoppingMallActive = false;
-          $scope.cartActive = false;
-          $scope.productManageActive = false;
-      });
+    });
 
-      $scope.$on('to-parent-shoppingMallActive', function () {
-          $scope.mainActive = false;
-          $scope.shoppingMallActive = true;
-          $scope.cartActive = false;
-          $scope.productManageActive = false;
-      });
+    $scope.$on('to-parent-mainActive', function () {
+        $scope.mainActive = true;
+        $scope.shoppingMallActive = false;
+        $scope.cartActive = false;
+        $scope.productManageActive = false;
+    });
 
-      $scope.$on('to-parent-cartActive', function () {
-          $scope.mainActive = false;
-          $scope.shoppingMallActive = false;
-          $scope.cartActive = true;
-          $scope.productManageActive = false;
-      });
+    $scope.$on('to-parent-shoppingMallActive', function () {
+        $scope.mainActive = false;
+        $scope.shoppingMallActive = true;
+        $scope.cartActive = false;
+        $scope.productManageActive = false;
+    });
 
-      $scope.$on('to-parent-productManageActive', function () {
-          $scope.mainActive = false;
-          $scope.shoppingMallActive = false;
-          $scope.cartActive = false;
-          $scope.productManageActive = true;
-      });
+    $scope.$on('to-parent-cartActive', function () {
+        $scope.mainActive = false;
+        $scope.shoppingMallActive = false;
+        $scope.cartActive = true;
+        $scope.productManageActive = false;
+    });
+
+    $scope.$on('to-parent-productManageActive', function () {
+        $scope.mainActive = false;
+        $scope.shoppingMallActive = false;
+        $scope.cartActive = false;
+        $scope.productManageActive = true;
+    });
 
     });
