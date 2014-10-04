@@ -28,7 +28,7 @@ angular.module('letusgoApp')
         });
       });
 
-    
+
     $scope.$on('to-parent-delete',function(event,cartItem){
 
       CartItemsService.getCartItems(function(data) {

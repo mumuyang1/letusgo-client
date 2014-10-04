@@ -5,7 +5,7 @@ describe('Controller: PayCtrl', function () {
 
   beforeEach(module('letusgoApp'));
 
-  var $controller,cartItemService,scope,createController,cartProduct,item;
+  var $controller,cartItemService,scope,createController,cartProducts,item;
 
   beforeEach(inject(function ($injector) {
     scope = $injector.get('$rootScope').$new();
@@ -21,26 +21,28 @@ describe('Controller: PayCtrl', function () {
       });
     };
 
-    cartProduct = [
+    cartProducts = [
          {
-           items : {barcode:'ITEM000007',category:'生活用品',name:'水杯',price:'16.00',unit:'个'},
-           inputCount : 1
+           item : {id:7,barcode:'ITEM000007',category:'生活用品',name:'水杯',price:'16.00',unit:'个'},
+           count : 1
          }
       ];
 
-      item = {barcode:'ITEM000007',category:'生活用品',name:'水杯',price:'16.00',unit:'个'};
+      item = {id:7,barcode:'ITEM000007',category:'生活用品',name:'水杯',price:'16.00',unit:'个'};
 
-      spyOn(cartItemService, 'get').and.returnValue(cartProduct);
-      spyOn(cartItemService,'getTotal').and.returnValue(16);
+    spyOn(cartItemService,'getTotal');
+    spyOn(cartItemService,'getCartItems').and.callFake(function(callback){
+      callback(cartProducts);
+    });
   }));
 
   it('should show is ok',function(){
 
       spyOn(scope,'$emit');
-      spyOn(cartItemService,'getCartItems');
       createController();
       expect(scope.$emit).toHaveBeenCalledWith('to-parent-cartActive');
       expect(cartItemService.getCartItems).toHaveBeenCalled();
+      expect(cartItemService.getTotal).toHaveBeenCalled();
   });
 
   it('should payButton can do',function(){
@@ -49,6 +51,8 @@ describe('Controller: PayCtrl', function () {
       spyOn(scope,'$emit');
       scope.payButton(item);
       expect(scope.$emit).toHaveBeenCalledWith('to-parent-pay');
+      expect(cartItemService.getCartItems).toHaveBeenCalled();
+      expect(cartItemService.getTotal).toHaveBeenCalled();
   });
 
 });
