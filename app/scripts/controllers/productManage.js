@@ -26,10 +26,10 @@ angular.module('letusgoApp')
       $scope.addProduct = function(){
         $scope.clickAddProduct = true;
         $scope.controlLayout = false;
-        $http.get('/api/categories')
-          .success(function (data) {
-            $scope.categories  =  data;
-          });
+
+        categoryManageService.getCategories(function(data){
+          $scope.categories  =  data;
+        });
       };
 
 
@@ -66,7 +66,7 @@ angular.module('letusgoApp')
               unit : item.unit,
               categoryId : item.categoryId,
               category : data
-            };git
+            };
             CartItemsService.set('productToChange',item.id);
         });
         $scope.clickChangeProduct = true;
