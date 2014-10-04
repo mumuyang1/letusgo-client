@@ -2,7 +2,7 @@
 
 angular.module('letusgoApp').service('ItemsService',function(CartItemsService,$http){
 
-      function getItems(callback) {
+      function getAllItems(callback) {
         $http.get('/api/items')
           .success(function (data) {
 
@@ -13,9 +13,9 @@ angular.module('letusgoApp').service('ItemsService',function(CartItemsService,$h
           });
       }
 
-      this.getAllItems = function(callback){
+      this.getItems = function(callback){
 
-        getItems(function(data){
+        getAllItems(function(data){
           callback(data);
         });
       };
