@@ -67,31 +67,35 @@
         $http.put('/api/cartItems/'+item.id,{'operation' : 'delete'});
       };
 
-        this.getTotal = function (cartItems) {
-            var total = 0;
-            _.forEach(cartItems, function (cartItem) {
-                total += cartItem.item.price * cartItem.count;
-            });
-            return total.toFixed(2);
-        };
+      this.getTotal = function (cartItems) {
+          var total = 0;
+          _.forEach(cartItems, function (cartItem) {
+              total += cartItem.item.price * cartItem.count;
+          });
+          return total.toFixed(2);
+      };
 
 
-        this.pay = function(){
+      this.pay = function(callback) {
+         $http.post('/api/payment/')
+           .success(function (data, status) {
 
-            $http.delete('/api/cartItems/');
-            var cartSums = 0;
-            localStorageService.set('cartSum',cartSums);
-            return cartSums;
-        };
+               if (status === 200) {
+                 var cartSums = 0;
+                 localStorageService.set('cartSum', cartSums);
+                 callback();
+               }
+           });
+      };
 
 
-       this.set = function(key,value){
-         localStorageService.set(key,value);
-       };
+    this.set = function(key,value){
+       localStorageService.set(key,value);
+     };
 
 
-       this.get = function(key){
-        return localStorageService.get(key);
-       };
+    this.get = function(key){
+      return localStorageService.get(key);
+     };
 
     });
