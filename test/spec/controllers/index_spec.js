@@ -6,7 +6,7 @@ describe('Controller: CartSumsCtrl', function () {
   beforeEach(module('letusgoApp'));
 
   var $controller,itemsService,cartItemService,scope,$rootScope,
-      createController,item,cartProduct,cartSum;
+      createController,item,cartProducts,cartSum;
 
 
   beforeEach(inject(function ($injector) {
@@ -28,10 +28,10 @@ describe('Controller: CartSumsCtrl', function () {
 
     item = {barcode:'ITEM000007',category:'生活用品',name:'水杯',price:'16.00',unit:'个'};
 
-    cartProduct = [
+    cartProducts = [
          {
-           items : {barcode:'ITEM000007',category:'生活用品',name:'水杯',price:'16.00',unit:'个'},
-           inputCount : 1
+           item : {id:7,barcode:'ITEM000007',category:'生活用品',name:'水杯',price:'16.00',unit:'个'},
+           count : 1
          }
       ];
 
@@ -69,41 +69,47 @@ describe('Controller: CartSumsCtrl', function () {
     expect(cartItemService.set).toHaveBeenCalled();
   });
 
-//  it('should to-parent-add can do',function(){
-//    createController();
-//    scope.$digest();
-//    spyOn(cartItemService, 'add').and.returnValue(3);
-//    $rootScope.$broadcast('to-parent-add');
-//    scope.$digest();
-//    expect(scope.cartsums).toBe(3);
-//  });
-//
-//  it('should to-parent-reduce can do',function(){
-//    createController();
-//    scope.$digest();
-//    spyOn(cartItemService, 'reduce').and.returnValue(5);
-//    $rootScope.$broadcast('to-parent-reduce');
-//    scope.$digest();
-//    expect(scope.cartsums).toBe(5);
-//  });
-//
-//  it('should to-parent-delete can do',function(){
-//    createController();
-//    scope.$digest();
-//    spyOn(cartItemService, 'delete').and.returnValue(2);
-//    $rootScope.$broadcast('to-parent-delete');
-//    scope.$digest();
-//    expect(scope.cartsums).toBe(2);
-//  });
-//
-//  it('should to-parent-pay can do',function(){
-//    createController();
-//    scope.$digest();
-//    spyOn(cartItemService, 'pay').and.returnValue(0);
-//    $rootScope.$broadcast('to-parent-pay');
-//    scope.$digest();
-//    expect(scope.cartsums).toBe(0);
-//  });
+  it('should to-parent-add can do',function(){
+    createController();
+    scope.$digest();
+    spyOn(cartItemService, 'add').and.returnValue(3);
+    $rootScope.$broadcast('to-parent-add');
+    scope.$digest();
+    expect(scope.cartsums).toBe(3);
+  });
+
+  it('should to-parent-reduce can do',function(){
+    spyOn(cartItemService,'getCartItems').and.callFake(function(callback){
+      callback(cartProducts);
+    });
+    spyOn(cartItemService,'updateCartSumsWhenReduce');
+
+    createController();
+
+    scope.$digest();
+    $rootScope.$broadcast('to-parent-reduce');
+    scope.$digest();
+
+    expect(cartItemService.getCartItems).toHaveBeenCalled();
+    expect(cartItemService.updateCartSumsWhenReduce).toHaveBeenCalled();
+  });
+
+  it('should to-parent-delete can do',function(){
+    spyOn(cartItemService,'getCartItems').and.callFake(function(callback){
+      callback(cartProducts);
+    });
+    spyOn(cartItemService,'updateCartSumsWhenDelete');
+
+    createController();
+
+    scope.$digest();
+    $rootScope.$broadcast('to-parent-delete');
+    scope.$digest();
+
+    expect(cartItemService.getCartItems).toHaveBeenCalled();
+    expect(cartItemService.updateCartSumsWhenDelete).toHaveBeenCalled();
+  });
+
 
   it('should to-parent-mainActive can do',function(){
 
