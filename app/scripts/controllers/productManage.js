@@ -66,7 +66,7 @@ angular.module('letusgoApp')
               unit : item.unit,
               categoryId : item.categoryId,
               category : data
-            };
+            };git
             CartItemsService.set('productToChange',item.id);
         });
         $scope.clickChangeProduct = true;
