@@ -93,61 +93,47 @@ describe('Service: itemsService', function () {
           expect(cartService.get).toHaveBeenCalled();
           expect(cartService.set).toHaveBeenCalled();
       });
+
+
+
+  describe('productManage', function () {
+
+    var allProducts,toChange,newName,newPrice,newUnit,newCategory;
+
+    beforeEach(function(){
+
+      allProducts = [
+        {barcode:'ITEM000001',category:'水果',name:'苹果',price:'3.00',unit:'斤'},
+        {barcode:'ITEM000002',category:'水果',name:'香蕉',price:'3.50',unit:'斤'},
+        {barcode:'ITEM000003',category:'饮料',name:'可口可乐',price:'3.00',unit:'瓶'}
+      ];
+      toChange = '香蕉';
+
+      newName = '果粒奶优';
+      newPrice = '6.00';
+      newUnit = '瓶';
+      newCategory = '饮料';
+
+    });
+
+//    it('should delete button can do', function(){
 //
-//      it('should get cartProducts is right',function(){
-//        spyOn(cartService,'getCartItems').and.returnValue(cartItem);
-//        spyOn(cartService,'get').and.returnValue(cartProducts);
-//        spyOn(itemsService,'judgeIsExist');
+//      var result = itemsService.deleteProductButton(toChange);
+//      expect(result.length).toBe(2);
+//      expect(result[1].name).toBe('可口可乐');
 //
-//        itemsService.getCartProducts(item);
+//    });
 //
-//        expect(cartService.set).toHaveBeenCalled();
-//        expect(cartService.getCartItems).toHaveBeenCalled();
-//        expect(cartService.get).toHaveBeenCalled();
-//        expect(itemsService.judgeIsExist).toHaveBeenCalled();
-//      });
+//    it('should change product can do', function(){
 //
-//      it('should get cartProducts is right firstly',function(){
-//        spyOn(cartService,'getCartItems').and.returnValue(cartItem);
-//        spyOn(cartService,'get').and.returnValue(null);
-//        spyOn(itemsService,'judgeIsExist');
+//      var result = itemsService.changeProduct(toChange,newName,newPrice,newUnit,newCategory);
+//      expect(result.length).toBe(3);
+//      expect(result[1].name).toBe('果粒奶优');
+//      expect(result[1].category).toBe('饮料');
+//      expect(result[1].price).toBe('6.00');
 //
-//        itemsService.getCartProducts(item);
-//
-//        expect(cartService.set).toHaveBeenCalled();
-//        expect(itemsService.judgeIsExist.calls.count()).toBe(0);
-//      });
-//
-//
-//     it('should judge can do', function(){
-//
-//       var result = itemsService.judgeIsExist(cartProducts,item);
-//       expect(result).toBe(true);
-//     });
-//
-//     it('should judge can do when is another case', function(){
-//
-//       var result = itemsService.judgeIsExist(cartProducts,allProducts[3]);
-//       expect(result).toBe(false);
-//     });
-//
-//
-//     it('should load all products can do when is the page', function(){
-//       spyOn(itemsService,'getItems').and.returnValue(allProducts);
-//
-//       var result = itemsService.loadAllProducts(true);
-//       expect(itemsService.getItems).toHaveBeenCalled();
-//       expect(result.length).toBe(3);
-//       expect(result[2].name).toBe('菠萝');
-//     });
-//
-//
-//     it('should load all products can do when is not the page', function(){
-//       spyOn(itemsService,'getItems').and.returnValue(allProducts);
-//
-//       var result = itemsService.loadAllProducts(false);
-//       expect(itemsService.getItems).toHaveBeenCalled();
-//       expect(result.length).toBe(5);
-//       expect(result[3].name).toBe('雪碧');
-//     });
+//    });
+  });
+
+
 });

@@ -1,6 +1,6 @@
 'use strict';
 angular.module('letusgoApp')
-  .controller('ProductManageCtrl', function ($http,$scope,CartItemsService,categoryManageService,productManageService,ItemsService){
+  .controller('ProductManageCtrl', function ($http,$scope,CartItemsService,categoryManageService,ItemsService){
 
         function refresh(){
           ItemsService.getItems(function(data){
@@ -32,17 +32,18 @@ angular.module('letusgoApp')
           });
       };
 
-      $scope.finishAddProduct = function(name,price,unit,categoryName){
-        $scope.clickAddProduct = false;
-        $scope.controlLayout = true;
-        categoryManageService. getCategoryByName(categoryName,function(data){
 
-          var categoryId = data.id;
-          productManageService.addProductButton(name,price,unit,categoryId, function(){
-            refresh();
-          });
+    $scope.finishAddProduct = function(name,price,unit,categoryName){
+      $scope.clickAddProduct = false;
+      $scope.controlLayout = true;
+      categoryManageService. getCategoryByName(categoryName,function(data){
+
+        var categoryId = data.id;
+        ItemsService.addProductButton(name,price,unit,categoryId, function(){
+          refresh();
         });
-      };
+      });
+    };
 
       $scope.cancelAddProduct = function(){
         $scope.clickAddProduct = false;
@@ -73,19 +74,19 @@ angular.module('letusgoApp')
       };
 
 
-      $scope.finishChangeProduct = function(newName,newPrice,newUnit,newCategory){
-        $scope.clickChangeProduct = false;
-        $scope.controlLayout = true;
+    $scope.finishChangeProduct = function(newName,newPrice,newUnit,newCategory){
+      $scope.clickChangeProduct = false;
+      $scope.controlLayout = true;
 
-        $scope.productToChange = CartItemsService.get('productToChange');
+      $scope.productToChange = CartItemsService.get('productToChange');
 
-        categoryManageService.getCategoryByName(newCategory,function(data){
+      categoryManageService.getCategoryByName(newCategory,function(data){
 
-          var  newCategoryId = data.id;
-          productManageService.changeProduct($scope.productToChange,newName,newPrice,newUnit,newCategoryId);
-          refresh();
-        });
-      };
+        var  newCategoryId = data.id;
+        ItemsService.changeProduct($scope.productToChange,newName,newPrice,newUnit,newCategoryId);
+        refresh();
+      });
+    };
 
 
       $scope.cancelChangeProduct = function(){
@@ -93,11 +94,10 @@ angular.module('letusgoApp')
         $scope.controlLayout = true;
       };
 
+    $scope.deleteProduct = function(id){
 
-      $scope.deleteProduct = function(id){
-
-        productManageService.deleteProductButton(id);
-        refresh();
-      };
+      ItemsService.deleteProductButton(id);
+      refresh();
+    };
 
   });

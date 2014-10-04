@@ -49,8 +49,6 @@ describe('Controller: PayCtrl', function () {
       spyOn(scope,'$emit');
       scope.payButton(item);
       expect(scope.$emit).toHaveBeenCalledWith('to-parent-pay');
-      expect(scope.cartItems.length).toBe(0);
-      expect(cartItemService.getTotal.calls.count()).toBe(1);
   });
 
 });

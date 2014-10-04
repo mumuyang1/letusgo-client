@@ -31,7 +31,7 @@ angular.module('letusgoApp').service('ItemsService',function(CartItemsService,$h
           return cartSum;
         };
 
-        this.addProductButton = function(name,price,unit,categoryId,callback){
+      this.addProductButton = function(name,price,unit,categoryId,callback){
 
          getAllItems(function(data){
           var id = data[data.length - 1].id + 1;
