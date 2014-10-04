@@ -7,13 +7,12 @@ angular.module('letusgoApp')
         updateTotalAndCart();
 
         function updateTotalAndCart(){
-
              CartItemsService.getCartItems(function(data){
+
                $scope.cartItems = data;
 
                $scope.getSubtotal = function(cartItem){
-                 var subtotal = cartItem.item.price * cartItem.count;
-                 return subtotal.toFixed(2);
+                 return CartItemsService.getSubtotal(cartItem);
                };
                $scope.total = CartItemsService.getTotal($scope.cartItems);
              });
@@ -35,7 +34,6 @@ angular.module('letusgoApp')
         };
 
         $scope.deleteButton = function (item) {
-
 
             $scope.$emit('to-parent-delete',item);
             CartItemsService.deleteCartItem(item);
