@@ -6,7 +6,7 @@ describe('Controller: CategoryManageCtrl', function () {
   beforeEach(module('letusgoApp'));
 
   var $controller,categoryService,scope,createController,cartItemService,
-      categories,newCategoryName,allProducts,localStorageService;
+      categories,newCategoryName,allProducts,localStorageService,id;
 
   beforeEach(inject(function ($injector) {
     scope = $injector.get('$rootScope').$new();
@@ -30,7 +30,7 @@ describe('Controller: CategoryManageCtrl', function () {
           {id: 1, name: '水果'},
           {id: 2, name: '生活用品'}
         ];
-
+      id = 1;
       newCategoryName = '零食';
 
       allProducts = [
@@ -43,10 +43,10 @@ describe('Controller: CategoryManageCtrl', function () {
 
       spyOn(cartItemService,'set');
       spyOn(scope,'$emit');
-
-
+      spyOn(categoryService,'getCategories').and.callFake(function(callback){
+        callback(categories);
+      });
   }));
-
 
 
   it('should highlight ok',function(){
@@ -55,9 +55,7 @@ describe('Controller: CategoryManageCtrl', function () {
   });
 
   it('should refresh function ok',function(){
-    spyOn(categoryService,'getCategories').and.callFake(function(callback){
-      callback(categories);
-    });
+
     createController();
     expect(categoryService.getCategories).toHaveBeenCalled();
   });
@@ -78,31 +76,29 @@ describe('Controller: CategoryManageCtrl', function () {
   });
 
 
-//  it('should finish add category can do when input new name',function(){
-//      spyOn(categoryService,'addCategory').and.callFake(newCategoryName,function(){
-//        callback();
-//      });
-//      var name = '零食';
-//      createController();
-//      scope.finishAddCategory(name);
-//      expect(categoryService.addCategory.calls.count()).toBe(1);
-//    expect(categoryService.getCategories.calls.count()).toBe(1);
-//      expect(scope.clickAddCategory).toBe(false);
-//    });
+  it('should finish add category can do when input new name',function(){
+      spyOn(categoryService,'addCategory').and.callFake(function(newCategoryName,callback){
+        callback();
+      });
+      var name = '零食';
+      createController();
+      scope.finishAddCategory(name);
+      expect(categoryService.addCategory.calls.count()).toBe(1);
+      expect(categoryService.getCategories.calls.count()).toBe(2);
+      expect(scope.clickAddCategory).toBe(false);
+    });
 
-//  it('should finish add category can do when not input',function(){
-//    spyOn(categoryService,'addCategory').and.callFake(newCategoryName,function(callback){
-//      callback(categories);
-//    });
-//    spyOn(categoryService,'getCategories').and.callFake(function(callback){
-//      callback(categories);
-//    });
-//    createController();
-//    scope.finishAddCategory(newCategoryName);
-//    expect(categoryService.addCategory.calls.count()).toBe(0);
-//    expect(categoryService.getCategories.calls.count()).toBe(0);
-//    expect(scope.clickAddCategory).toBe(false);
-//  });
+  it('should finish add category can do when not input',function(){
+    var name = null;
+    spyOn(categoryService,'addCategory').and.callFake(function(name,callback){
+      callback();
+    });
+    createController();
+    scope.finishAddCategory(name);
+    expect(categoryService.addCategory.calls.count()).toBe(0);
+    expect(categoryService.getCategories.calls.count()).toBe(1);
+    expect(scope.clickAddCategory).toBe(false);
+  });
 
 
   it('should add category can cancel',function(){
@@ -112,39 +108,31 @@ describe('Controller: CategoryManageCtrl', function () {
   });
 
 
-//  it('can delete the category when it has none products',function(){
-//
-//      spyOn(categoryService,'hasProductsInTheCategory').and.callFake(categories[0].id,function(callback){
-//        var data = false;
-//        callback(data);
-//      });
-//      spyOn(categoryService,'getCategories').and.callFake(function(callback){
-//        callback(categories);
-//      });
-//      spyOn(categoryService,'deleteCategoryButton');
-//      createController();
-//      scope.deleteCategory(categories[0]);
-//      expect(categoryService.deleteCategoryButton).toHaveBeenCalled();
-//      expect(categoryService.getCategories).toHaveBeenCalled();
-//  });
+  it('can delete the category when it has none products',function(){
 
-//  it('can not delete the category when it has products',function(){
-//      spyOn(categoryService,'hasProductsInTheCategory').and.returnValue(true);
-//      createController();
-//      scope.deleteCategory();
-//      expect(scope.clickDelete).toBe(true);
-//      expect(cartItemService.set).toHaveBeenCalled();
-//  });
-//
-//  it('should finish delete category can do',function(){
-//      spyOn(cartItemService,'get');
-//      spyOn(categoryService,'deleteCategoryButton');
-//      createController();
-//      scope.finishDelete();
-//      expect(categoryService.deleteCategoryButton).toHaveBeenCalled();
-//      expect(cartItemService.get.calls.count()).toBe(2);
-//      expect(scope.clickDelete).toBe(false);
-//  });
+      spyOn(categoryService,'hasProductsInTheCategory').and.callFake(function(id,callback){
+        var data = false;
+        callback(data);
+      });
+
+      spyOn(categoryService,'deleteCategoryButton');
+      createController();
+      scope.deleteCategory(categories[0]);
+      expect(categoryService.deleteCategoryButton).toHaveBeenCalled();
+      expect(categoryService.getCategories).toHaveBeenCalled();
+  });
+
+  it('can not delete the category when it has products',function(){
+    spyOn(categoryService,'hasProductsInTheCategory').and.callFake(function(id,callback){
+      var data = true;
+      callback(data);
+    });
+
+    createController();
+    scope.deleteCategory(categories[0]);
+    expect(scope.clickDelete).toBe(true);
+    expect(categoryService.deleteCategoryButton.calls.count()).toBe(0);
+  });
 
   it('should delete category can cancel',function(){
       createController();
@@ -163,9 +151,7 @@ describe('Controller: CategoryManageCtrl', function () {
   });
 
   it('should finish change category can do',function(){
-      spyOn(categoryService,'getCategories').and.callFake(function(callback){
-        callback(categories);
-      });
+
       spyOn(cartItemService,'get');
       spyOn(categoryService,'changeName');
       createController();
