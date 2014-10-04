@@ -5,7 +5,7 @@ describe('Controller: ShoppingMallCtrl', function () {
 
   beforeEach(module('letusgoApp'));
 
-  var $controller,$routeParams,itemsService,scope,createController,items,CartItemService;
+  var $controller,$routeParams,itemsService,scope,createController,items,CartItemService,categoryService,categories,id;
 
 
   beforeEach(inject(function ($injector) {
@@ -14,6 +14,7 @@ describe('Controller: ShoppingMallCtrl', function () {
     $routeParams = $injector.get('$routeParams');
     itemsService = $injector.get('ItemsService');
     CartItemService = $injector.get('CartItemsService');
+    categoryService = $injector.get('categoryManageService');
 
     createController = function(){
 
@@ -26,9 +27,15 @@ describe('Controller: ShoppingMallCtrl', function () {
 
     items = [
 
-            {barcode:'ITEM000007',category:'生活用品',name:'水杯',price:'16.00',unit:'个'},
-            {barcode:'ITEM000003',category:'水果',name:'菠萝',price:'4.00',unit:'个'}
+            {id:7,barcode:'ITEM000007',categoryId:1,name:'水杯',price:'16.00',unit:'个'},
+            {id:3,barcode:'ITEM000003',categoryId:2,name:'菠萝',price:'4.00',unit:'个'}
       ];
+    categories = [
+      {id: 1, name: '水果'},
+      {id: 2, name: '生活用品'}
+    ];
+
+    id = 1;
     }));
 
     it('should hightlight is ok',function(){
@@ -42,9 +49,13 @@ describe('Controller: ShoppingMallCtrl', function () {
       spyOn(itemsService,'getItems').and.callFake(function(callback){
         callback(items);
       });
+      spyOn(categoryService,'getCategoryById').and.callFake(function(id,callback){
+        callback(categories[0]);
+      });
 
       createController();
       expect(itemsService.getItems).toHaveBeenCalled();
+      expect(categoryService.getCategoryById).toHaveBeenCalled();
     });
 
 
