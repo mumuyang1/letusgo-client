@@ -28,7 +28,7 @@ describe('Controller: CategoryManageCtrl', function () {
 
       categories = [
           {id: 1, name: '水果'},
-          {id: 2, name: '生活用品'},
+          {id: 2, name: '生活用品'}
         ];
 
       newCategoryName = '零食';
@@ -43,13 +43,23 @@ describe('Controller: CategoryManageCtrl', function () {
 
       spyOn(cartItemService,'set');
       spyOn(scope,'$emit');
-      spyOn(categoryService,'getCategories').and.returnValue(categories);
+
+
   }));
+
 
 
   it('should highlight ok',function(){
       createController();
       expect(scope.$emit).toHaveBeenCalledWith('to-parent-productManageActive');
+  });
+
+  it('should refresh function ok',function(){
+    spyOn(categoryService,'getCategories').and.callFake(function(callback){
+      callback(categories);
+    });
+    createController();
+    expect(categoryService.getCategories).toHaveBeenCalled();
   });
 
 
@@ -68,11 +78,31 @@ describe('Controller: CategoryManageCtrl', function () {
   });
 
 
-  it('should finish add category can do',function(){
-      createController();
-      scope.finishAddCategory(newCategoryName);
-      expect(scope.clickAddCategory).toBe(false);
-    });
+//  it('should finish add category can do when input new name',function(){
+//      spyOn(categoryService,'addCategory').and.callFake(newCategoryName,function(){
+//        callback();
+//      });
+//      var name = '零食';
+//      createController();
+//      scope.finishAddCategory(name);
+//      expect(categoryService.addCategory.calls.count()).toBe(1);
+//    expect(categoryService.getCategories.calls.count()).toBe(1);
+//      expect(scope.clickAddCategory).toBe(false);
+//    });
+
+//  it('should finish add category can do when not input',function(){
+//    spyOn(categoryService,'addCategory').and.callFake(newCategoryName,function(callback){
+//      callback(categories);
+//    });
+//    spyOn(categoryService,'getCategories').and.callFake(function(callback){
+//      callback(categories);
+//    });
+//    createController();
+//    scope.finishAddCategory(newCategoryName);
+//    expect(categoryService.addCategory.calls.count()).toBe(0);
+//    expect(categoryService.getCategories.calls.count()).toBe(0);
+//    expect(scope.clickAddCategory).toBe(false);
+//  });
 
 
   it('should add category can cancel',function(){
@@ -84,15 +114,20 @@ describe('Controller: CategoryManageCtrl', function () {
 
 //  it('can delete the category when it has none products',function(){
 //
-//      spyOn(categoryService,'hasProductsInTheCategory').and.returnValue(false);
-//      spyOn(localStorageService,'get').and.returnValue(allProducts);
+//      spyOn(categoryService,'hasProductsInTheCategory').and.callFake(categories[0].id,function(callback){
+//        var data = false;
+//        callback(data);
+//      });
+//      spyOn(categoryService,'getCategories').and.callFake(function(callback){
+//        callback(categories);
+//      });
 //      spyOn(categoryService,'deleteCategoryButton');
 //      createController();
-//      scope.deleteCategory(categories[0].name);
+//      scope.deleteCategory(categories[0]);
 //      expect(categoryService.deleteCategoryButton).toHaveBeenCalled();
 //      expect(categoryService.getCategories).toHaveBeenCalled();
 //  });
-//
+
 //  it('can not delete the category when it has products',function(){
 //      spyOn(categoryService,'hasProductsInTheCategory').and.returnValue(true);
 //      createController();
@@ -128,6 +163,9 @@ describe('Controller: CategoryManageCtrl', function () {
   });
 
   it('should finish change category can do',function(){
+      spyOn(categoryService,'getCategories').and.callFake(function(callback){
+        callback(categories);
+      });
       spyOn(cartItemService,'get');
       spyOn(categoryService,'changeName');
       createController();
@@ -135,6 +173,7 @@ describe('Controller: CategoryManageCtrl', function () {
       expect(scope.clickChangeCategory).toBe(false);
       expect(cartItemService.get).toHaveBeenCalled();
       expect(categoryService.changeName).toHaveBeenCalled();
+      expect(categoryService.getCategories).toHaveBeenCalled();
   });
 
   it('should change category can cancel',function(){
