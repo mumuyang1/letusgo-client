@@ -75,10 +75,10 @@ describe('Service: itemsService', function () {
 
       $httpBackend.expectGET('/api/items').respond(200,allProducts);
       $httpBackend.expectPOST('/api/items/4',{
-        name: newName,
-        price: newPrice,
-        unit: newUnit,
-        categoryId: newCategoryId
+        item:{ name: newName,
+          price: newPrice,
+          unit: newUnit,
+          categoryId: newCategoryId}
       }).respond(200);
 
       itemsService.addProductButton(newName,newPrice,newUnit,newCategoryId,function(){});
@@ -94,10 +94,10 @@ describe('Service: itemsService', function () {
     it('should change product can do', function(){
 
       $httpBackend.expectPUT('/api/items/2',{
-        name: newName,
-        price: newPrice,
-        unit: newUnit,
-        categoryId: newCategoryId
+        item:{ name: newName,
+          price: newPrice,
+          unit: newUnit,
+          categoryId: newCategoryId}
       }).respond(200);
       itemsService.changeProduct(toChange,newName,newPrice,newUnit,newCategoryId);
       $httpBackend.flush();
