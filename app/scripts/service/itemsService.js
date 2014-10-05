@@ -51,27 +51,14 @@ angular.module('letusgoApp').service('ItemsService',function(CartItemsService,$h
       };
 
 
-//      this.changeProduct = function(id,newName,newPrice,newUnit,newCategoryId){
-//
-//        $http.put('/api/items/'+id,
-//          {
-//            name: newName,
-//            price: newPrice,
-//            unit: newUnit,
-//            categoryId: newCategoryId
-//          }
-//        );
-//      };
+      this.changeProduct = function(id,newName,newPrice,newUnit,newCategoryId){
 
-  this.changeProduct = function(id,newName,newPrice,newUnit,newCategoryId){
-
-    $http.put('/api/items/'+id,{
-      item:{ name: newName,
-             price: newPrice,
-             unit: newUnit,
-             categoryId: newCategoryId}
-      });
-  };
-
+        $http.put('/api/items/'+id,{
+          item:{ name: newName,
+                 price: newPrice,
+                 unit: newUnit,
+                 categoryId: newCategoryId}
+          });
+      };
 
 });
