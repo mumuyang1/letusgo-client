@@ -29,7 +29,7 @@
 
         _.forEach(cartItems, function (cartItem) {
 
-          if (cartItem.item.id === item.id) {
+          if (cartItem.item.name === item.name) {
 
             if(cartItem.count > 1){
 
@@ -52,7 +52,7 @@
 
            _.forEach(cartItems,function(cartItem){
 
-            if(cartItem.item.name === item.name){
+            if(cartItem.item.id === item.id){
 
               cartSums  = cartSums - cartItem.count;
               localStorageService.set('cartSum',cartSums);
@@ -82,7 +82,7 @@
 
 
       this.pay = function(callback) {
-         $http.post('/api/payment/')
+         $http.post('/api/payment')
            .success(function (data, status) {
 
                if (status === 200) {
