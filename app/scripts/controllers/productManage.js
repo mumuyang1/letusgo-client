@@ -2,61 +2,65 @@
 angular.module('letusgoApp')
   .controller('ProductManageCtrl', function ($http,$scope,CartItemsService,categoryManageService,ItemsService){
 
-        function refresh(){
-          ItemsService.getItems(function(data){
+      function refresh(){
+        ItemsService.getItems(function(data){
 
-            _.forEach(data,function(item){
+          _.forEach(data,function(item){
 
-              categoryManageService.getCategoryById(item.categoryId ,function(category){
-                item.category = category;
-                $scope.allProducts = data;
-              });
+            categoryManageService.getCategoryById(item.categoryId ,function(category){
+              item.category = category;
+              $scope.allProducts = data;
             });
           });
-        }
+        });
+      }
 
       refresh();
 
       $scope.$emit('to-parent-productManageActive');
 
-      $scope.controlLayout = true;
-      $scope.clickAddProduct = false;
-      $scope.clickChangeProduct = false;
+      function showCharge(layout,add,change){
+        $scope.controlLayout = layout;
+        $scope.clickAddProduct = add;
+        $scope.clickChangeProduct = change;
+      }
+
+      showCharge(true,false,false);
 
       $scope.addProduct = function(){
-        $scope.clickAddProduct = true;
-        $scope.controlLayout = false;
 
+        showCharge(false,true,false);
         categoryManageService.getCategories(function(data){
           $scope.categories  =  data;
         });
       };
 
 
-    $scope.finishAddProduct = function(name,price,unit,categoryName){
-      $scope.clickAddProduct = false;
-      $scope.controlLayout = true;
-      categoryManageService. getCategoryByName(categoryName,function(data){
+      $scope.finishAddProduct = function(name,price,unit,categoryName){
+        showCharge(true,false,false);
 
-        var categoryId = data.id;
-        ItemsService.addProductButton(name,price,unit,categoryId, function(){
-          refresh();
+        categoryManageService. getCategoryByName(categoryName,function(data){
+
+          var categoryId = data.id;
+          ItemsService.addProductButton(name,price,unit,categoryId, function(){
+            refresh();
+          });
         });
-      });
-    };
+      };
 
       $scope.cancelAddProduct = function(){
         $scope.clickAddProduct = false;
         $scope.controlLayout = true;
+        showCharge(true,false,false);
       };
 
 
       $scope.changeProduct = function(item){
 
-          categoryManageService.getCategories(function(data){
+        categoryManageService.getCategories(function(data){
 
-            $scope.categories = data;
-          });
+          $scope.categories = data;
+        });
 
         categoryManageService.getCategoryById(item.categoryId,function(data){
 
@@ -69,35 +73,32 @@ angular.module('letusgoApp')
             };
             CartItemsService.set('productToChange',item.id);
         });
-        $scope.clickChangeProduct = true;
-        $scope.controlLayout = false;
+        showCharge(false,false,true);
       };
 
 
-    $scope.finishChangeProduct = function(newName,newPrice,newUnit,newCategory){
-      $scope.clickChangeProduct = false;
-      $scope.controlLayout = true;
+      $scope.finishChangeProduct = function(newName,newPrice,newUnit,newCategory){
 
-      $scope.productToChange = CartItemsService.get('productToChange');
+        showCharge(true,false,false);
 
-      categoryManageService.getCategoryByName(newCategory,function(data){
+        $scope.productToChange = CartItemsService.get('productToChange');
 
-        var  newCategoryId = data.id;
-        ItemsService.changeProduct($scope.productToChange,newName,newPrice,newUnit,newCategoryId);
-        refresh();
-      });
-    };
+        categoryManageService.getCategoryByName(newCategory,function(data){
+
+          var  newCategoryId = data.id;
+          ItemsService.changeProduct($scope.productToChange,newName,newPrice,newUnit,newCategoryId);
+          refresh();
+        });
+      };
 
 
       $scope.cancelChangeProduct = function(){
-        $scope.clickChangeProduct = false;
-        $scope.controlLayout = true;
+        showCharge(true,false,false);
       };
 
-    $scope.deleteProduct = function(id){
+      $scope.deleteProduct = function(id){
 
-      ItemsService.deleteProductButton(id);
-      refresh();
-    };
-
+        ItemsService.deleteProductButton(id);
+        refresh();
+      };
   });
