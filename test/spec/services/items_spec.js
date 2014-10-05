@@ -2,7 +2,7 @@
 
 describe('Service: itemsService', function () {
 
-   var cartService,itemsService,item,cartItem,cartProducts,allProducts,allProducts1,$httpBackend;
+   var cartService,itemsService,item,allProducts,$httpBackend;
 
    beforeEach(function(){
     module('letusgoApp');
@@ -12,128 +12,96 @@ describe('Service: itemsService', function () {
           $httpBackend = $injector.get('$httpBackend');
        });
 
-       cartProducts =[
-            {
-              items : {barcode:'ITEM000003',category:'水果',name:'菠萝',price:'4.00',unit:'个'},
-              inputCount : 3
-            }
-        ];
-
-       cartItem = [
-           {
-             items : {barcode:'ITEM000003',category:'水果',name:'菠萝',price:'4.00',unit:'个'},
-             inputCount : 1
-           }
-        ];
-
-       item = {barcode:'ITEM000003',category:'水果',name:'菠萝',price:'4.00',unit:'个'};
+       item = {id:3,barcode:'ITEM000003',category:'水果',name:'菠萝',price:'4.00',unit:'个'};
 
        allProducts = [
-                {barcode:'ITEM000001',category:'水果',name:'苹果',price:'3.00',unit:'斤'},
-                {barcode:'ITEM000002',category:'水果',name:'香蕉',price:'3.50',unit:'斤'},
-                {barcode:'ITEM000003',category:'水果',name:'菠萝',price:'4.00',unit:'个'},
-                {barcode:'ITEM000004',category:'饮料',name:'雪碧',price:'3.00',unit:'瓶'},
-                {barcode:'ITEM000005',category:'饮料',name:'可口可乐',price:'3.00',unit:'瓶'}
-              ];
-
-       allProducts1 = [
-                {barcode:'ITEM000001',category:'水果',name:'苹果',price:'3.00',unit:'斤'},
-                {barcode:'ITEM000002',category:'水果',name:'香蕉',price:'3.50',unit:'斤'},
-                {barcode:'ITEM000003',category:'水果',name:'菠萝',price:'4.00',unit:'个'}
+                {id:1,barcode:'ITEM000001',categoryId:1,name:'苹果',price:'3.00',unit:'斤'},
+                {id:2,barcode:'ITEM000002',categoryId:1,name:'香蕉',price:'3.50',unit:'斤'},
+                {id:3,barcode:'ITEM000003',categoryId:1,name:'菠萝',price:'4.00',unit:'个'},
+                {id:4,barcode:'ITEM000004',categoryId:2,name:'雪碧',price:'3.00',unit:'瓶'},
+                {id:5,barcode:'ITEM000005',categoryId:2,name:'可口可乐',price:'3.00',unit:'瓶'}
               ];
 
        spyOn(cartService, 'set');
-       $httpBackend.expectGET('/api/items').respond(allProducts);
-
    });
 
-     it('should items can get', function(){
-       var callback = jasmine.createSpy('callback');
-       callback({
-         allProducts: allProducts
-       });
-       $httpBackend.expectGET('/api/items');
-       itemsService.getItems(callback, function(){
-         $httpBackend.flush();
-       });
-       expect(callback).toHaveBeenCalledWith(jasmine.objectContaining({
-         allProducts: allProducts
-       }));
-     });
-
-//     it('should items is right when store is not null', function(){
-//         spyOn(cartService,'get').and.returnValue(allProducts);
-//
-//         var items = itemsService.getItems();
-//         expect(items.length).toBe(5);
-//         expect(items[2].name).toBe('菠萝');
-//         expect(cartService.get).toHaveBeenCalled();
-//     });
-//
-//      it('should get pageTotal is right', function(){
-//          spyOn(itemsService,'loadAllProducts').and.returnValue(allProducts);
-//
-//          var result = itemsService.getPageTotal();
-//          expect(itemsService.loadAllProducts).toHaveBeenCalled();
-//          expect(result.length).toBe(2);
-//      });
-//
-//      it('should get pageTotal is right another case ', function(){
-//          spyOn(itemsService,'loadAllProducts').and.returnValue(allProducts1);
-//
-//          var result = itemsService.getPageTotal();
-//          expect(itemsService.loadAllProducts).toHaveBeenCalled();
-//          expect(result.length).toBe(1);
-//      });
-//
-      it('should cartSum in addCart is right',function(){
-          spyOn(cartService,'get').and.returnValue(3);
-          var result = itemsService.addCart(item);
-          expect(result).toBe(4);
-          expect(cartService.get).toHaveBeenCalled();
-          expect(cartService.set).toHaveBeenCalled();
+      it('should items is right when store is not null', function(){
+        $httpBackend.expectGET('/api/items').respond(200,allProducts);
+        itemsService.getItems(function(data){
+          expect(data.length).toBe(5);
+        });
+        $httpBackend.flush();
       });
 
+     it('should items is right when store is null', function(){
+        $httpBackend.expectGET('/api/items').respond(200,null);
+        $httpBackend.expectPOST('/api/items').respond(200,allProducts);
+        itemsService.getItems(function(data){
+        });
+        $httpBackend.flush();
+     });
 
+    it('should cartSum in addCart is right',function(){
+        $httpBackend.expectPOST('/api/cartItems',{'item' : item}).respond(200,null);
+        spyOn(cartService,'get').and.returnValue(3);
+        var result = itemsService.addCart(item);
+        expect(result).toBe(4);
+        expect(cartService.get).toHaveBeenCalled();
+        expect(cartService.set).toHaveBeenCalled();
+        $httpBackend.flush();
+    });
 
   describe('productManage', function () {
 
-    var allProducts,toChange,newName,newPrice,newUnit,newCategory;
+    var allProducts,toChange,newName,newPrice,newUnit,newCategoryId;
 
     beforeEach(function(){
 
       allProducts = [
-        {barcode:'ITEM000001',category:'水果',name:'苹果',price:'3.00',unit:'斤'},
-        {barcode:'ITEM000002',category:'水果',name:'香蕉',price:'3.50',unit:'斤'},
-        {barcode:'ITEM000003',category:'饮料',name:'可口可乐',price:'3.00',unit:'瓶'}
+        {id:1,barcode:'ITEM000001',category:'水果',name:'苹果',price:'3.00',unit:'斤'},
+        {id:2,barcode:'ITEM000002',category:'水果',name:'香蕉',price:'3.50',unit:'斤'},
+        {id:3,barcode:'ITEM000003',category:'饮料',name:'可口可乐',price:'3.00',unit:'瓶'}
       ];
-      toChange = '香蕉';
+      toChange = 2;
 
       newName = '果粒奶优';
       newPrice = '6.00';
       newUnit = '瓶';
-      newCategory = '饮料';
+      newCategoryId = 2;
 
     });
 
-//    it('should delete button can do', function(){
-//
-//      var result = itemsService.deleteProductButton(toChange);
-//      expect(result.length).toBe(2);
-//      expect(result[1].name).toBe('可口可乐');
-//
-//    });
-//
-//    it('should change product can do', function(){
-//
-//      var result = itemsService.changeProduct(toChange,newName,newPrice,newUnit,newCategory);
-//      expect(result.length).toBe(3);
-//      expect(result[1].name).toBe('果粒奶优');
-//      expect(result[1].category).toBe('饮料');
-//      expect(result[1].price).toBe('6.00');
-//
-//    });
-  });
+    it('can add a product', function(){
 
+      $httpBackend.expectGET('/api/items').respond(200,allProducts);
+      $httpBackend.expectPOST('/api/items/4',{
+        name: newName,
+        price: newPrice,
+        unit: newUnit,
+        categoryId: newCategoryId
+      }).respond(200);
+
+      itemsService.addProductButton(newName,newPrice,newUnit,newCategoryId,function(){});
+      $httpBackend.flush();
+    });
+
+    it('should delete button can do', function(){
+      $httpBackend.expectDELETE('/api/items/3').respond(200);
+      itemsService.deleteProductButton(item.id);
+      $httpBackend.flush();
+    });
+
+    it('should change product can do', function(){
+
+      $httpBackend.expectPUT('/api/items/2',{
+        name: newName,
+        price: newPrice,
+        unit: newUnit,
+        categoryId: newCategoryId
+      }).respond(200);
+      itemsService.changeProduct(toChange,newName,newPrice,newUnit,newCategoryId);
+      $httpBackend.flush();
+    });
+  });
 
 });
