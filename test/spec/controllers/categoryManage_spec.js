@@ -46,6 +46,7 @@ describe('Controller: CategoryManageCtrl', function () {
       spyOn(categoryService,'getCategories').and.callFake(function(callback){
         callback(categories);
       });
+      spyOn(categoryService,'deleteCategoryButton');
   }));
 
 
@@ -115,7 +116,6 @@ describe('Controller: CategoryManageCtrl', function () {
         callback(data);
       });
 
-      spyOn(categoryService,'deleteCategoryButton');
       createController();
       scope.deleteCategory(categories[0]);
       expect(categoryService.deleteCategoryButton).toHaveBeenCalled();
