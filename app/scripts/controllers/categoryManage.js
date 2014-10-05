@@ -14,13 +14,16 @@ angular.module('letusgoApp')
 
     refresh();
 
-    $scope.clickAddCategory = false;
-    $scope.clickChangeCategory = false;
-    $scope.clickDelete = false;
+    function showCharge(add,change,clickDelete){
+      $scope.clickAddCategory = add;
+      $scope.clickChangeCategory = change;
+      $scope.clickDelete = clickDelete;
+    }
 
+    showCharge(false,false,false);
 
     $scope.addCategory = function(){
-      $scope.clickAddCategory = true;
+      showCharge(true,false,false);
     };
 
 
@@ -31,13 +34,13 @@ angular.module('letusgoApp')
           refresh();
         });
       }
-      $scope.clickAddCategory = false;
-
+      showCharge(false,false,false);
     };
 
 
     $scope.cancelAddCategory = function(){
-      $scope.clickAddCategory = false;
+
+      showCharge(false,false,false);
     };
 
 
@@ -46,7 +49,7 @@ angular.module('letusgoApp')
 
       categoryManageService.hasProductsInTheCategory(category.id,function(data){
         if(data){
-          $scope.clickDelete = true;
+          showCharge(false,false,true);
 
         }else{
 
@@ -57,18 +60,18 @@ angular.module('letusgoApp')
     };
 
     $scope.cancelDelete = function(){
-      $scope.clickDelete = false;
+      showCharge(false,false,false);
     };
 
     $scope.changeCategory = function(category){
       $scope.newName = category.name;
-      $scope.clickChangeCategory = true;
+      showCharge(false,true,false);
       CartItemsService.set('categoryToChange',category.id);
     };
 
 
     $scope.finishChangeCategory = function(newName){
-      $scope.clickChangeCategory = false;
+      showCharge(false,false,false);
       $scope.categoryId = CartItemsService.get('categoryToChange');
       categoryManageService.changeName($scope.categoryId,newName);
       refresh();
@@ -76,7 +79,7 @@ angular.module('letusgoApp')
 
 
     $scope.cancelChangeCategory = function(){
-      $scope.clickChangeCategory = false;
+      showCharge(false,false,false);
     };
 
 });
