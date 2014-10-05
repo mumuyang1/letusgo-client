@@ -7,7 +7,7 @@
           $http.get('/api/categories')
             .success(function (data) {
               if(!data){
-                $http.post('/api/categories/');
+                $http.post('/api/categories');
               }
               callback(data);
             });
@@ -55,7 +55,7 @@
 
       this.hasProductsInTheCategory = function(categoryId,callback){
 
-          $http.get('api/items').success(function (products) {
+          $http.get('/api/items').success(function (products) {
 
             callback(_.any(products,{ categoryId: categoryId}));
           });
