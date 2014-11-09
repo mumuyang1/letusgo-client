@@ -66,7 +66,7 @@ describe('Service: itemsService', function () {
     it('can add a product', function () {
 
       $httpBackend.expectGET('/api/items').respond(200, allProducts);
-      $httpBackend.expectPOST('/api/items/4', {
+      $httpBackend.expectPOST('/api/items', {
         item: { name: newName,
           price: newPrice,
           unit: newUnit,

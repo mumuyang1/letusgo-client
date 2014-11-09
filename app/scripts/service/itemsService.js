@@ -29,9 +29,8 @@ angular.module('letusgoApp').service('ItemsService', function (CartItemsService,
 
   this.addProductButton = function (name, price, unit, categoryId, callback) {
 
-    getAllItems(function (data) {
-      var id = data[data.length - 1].id + 1;
-      $http.post('/api/items/' + id, {
+    getAllItems(function () {
+      $http.post('/api/items', {
         item: {  name: name,
           price: price,
           unit: unit,
