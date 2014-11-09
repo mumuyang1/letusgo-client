@@ -63,7 +63,7 @@ describe('Service: categoryManageService', function () {
         callback(categories);
       });
 
-      $httpBackend.expectPOST('/api/categories/2',{ name : newCategoryName }).respond(200);
+      $httpBackend.expectPOST('/api/categories',{ name : newCategoryName }).respond(200);
 
       categoryService.addCategory(newCategoryName ,function(){
         expect(categoryService.getCategories).toHaveBeenCalled();
