@@ -27,17 +27,8 @@ describe('Service: categoryManageService', function () {
         newCategoryName = '食品';
      });
 
-     it('can get categories  when store is null', function(){
-        $httpBackend.expectGET('/api/categories').respond(200,null);
-        $httpBackend.expectPOST('/api/categories').respond(200,categories);
 
-        categoryService.getCategories(function(data){
-          expect(data).toBe(null);
-        });
-        $httpBackend.flush();
-     });
-
-     it('should get categoryData is right when store is not null', function(){
+     it('should get categoryData is right', function(){
         $httpBackend.expectGET('/api/categories').respond(200,categories);
         categoryService.getCategories(function(data){
           expect(data.length).toBe(1);

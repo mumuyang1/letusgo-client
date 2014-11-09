@@ -6,9 +6,6 @@
       this.getCategories = function(callback){
           $http.get('/api/categories')
             .success(function (data) {
-              if(!data){
-                $http.post('/api/categories');
-              }
               callback(data);
             });
       };
