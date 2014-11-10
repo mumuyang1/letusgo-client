@@ -36,6 +36,12 @@ angular.module('letusgoApp')
       });
      });
 
+    $scope.$on('to-parent-change',function(event,cartItem){
+
+      CartItemsService.getCartItems(function(data) {
+        $scope.cartsums = CartItemsService.updateCartSumsWhenChange(data, cartItem);
+      });
+    });
 
     function highlight(main,shoppingmall,cart,productManage) {
       $scope.mainActive = main;
